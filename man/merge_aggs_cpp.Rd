@@ -19,6 +19,8 @@ merge_aggs_cpp(
   E_perimeter_merge,
   E_score_size,
   E_dscore,
+  E_dscore_merge,
+  E_iter_merge,
   d_mu,
   d_sig,
   iter_max,

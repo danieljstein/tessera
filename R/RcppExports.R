@@ -97,8 +97,8 @@ update_E_cpp <- function(V_pcs, V_perimeter, V_area, V_npts, E_from, E_to, E_npt
 #' @returns A list of `orig_num_tiles` vectors, disjoint sets specifying the IDs for which
 #'   of the original tiles have been merged together. Some vectors will have length 0.
 #'
-merge_aggs_cpp <- function(V_pcs, V_area, V_perimeter, V_npts, E_from, E_to, E_npts, E_area, E_edge_length, E_pcs_merge, E_w, E_perimeter_merge, E_score_size, E_dscore, d_mu, d_sig, iter_max, agg_mode, dscore_thresh, min_npts, max_npts) {
-    .Call('_tessera_merge_aggs_cpp', PACKAGE = 'tessera', V_pcs, V_area, V_perimeter, V_npts, E_from, E_to, E_npts, E_area, E_edge_length, E_pcs_merge, E_w, E_perimeter_merge, E_score_size, E_dscore, d_mu, d_sig, iter_max, agg_mode, dscore_thresh, min_npts, max_npts)
+merge_aggs_cpp <- function(V_pcs, V_area, V_perimeter, V_npts, E_from, E_to, E_npts, E_area, E_edge_length, E_pcs_merge, E_w, E_perimeter_merge, E_score_size, E_dscore, E_dscore_merge, E_iter_merge, d_mu, d_sig, iter_max, agg_mode, dscore_thresh, min_npts, max_npts) {
+    .Call('_tessera_merge_aggs_cpp', PACKAGE = 'tessera', V_pcs, V_area, V_perimeter, V_npts, E_from, E_to, E_npts, E_area, E_edge_length, E_pcs_merge, E_w, E_perimeter_merge, E_score_size, E_dscore, E_dscore_merge, E_iter_merge, d_mu, d_sig, iter_max, agg_mode, dscore_thresh, min_npts, max_npts)
 }
 
 foo_triplets_edges <- function(triplets, edges) {
