@@ -457,6 +457,9 @@ merge_aggs = function(
 
 }
 
+#' @export
+merge_aggs_cpp = merge_aggs_cpp
+
 #' Update tile IDs in the DMT data structure after merging
 #' 
 #' @param dmt DMT data structure
