@@ -364,7 +364,9 @@ merge_aggs = function(
     aggs$edges$npts = as.numeric(aggs$edges$npts) 
     # aggs$meta_data$nedges = as.numeric(aggs$meta_data$nedges) 
     # aggs$edges$nedges = as.numeric(aggs$edges$nedges) 
-    
+
+    aggs$edges$dscore_merge = rep(-Inf, nrow(aggs$edges))
+    aggs$edges$iter_merge = rep(Inf, nrow(aggs$edges))
     
     if (is.null(iter_max)) {
         iter_max = nrow(aggs$meta_data) - 1
@@ -415,6 +417,8 @@ merge_aggs = function(
         
         # E_score_merge = aggs$edges$score_merge,
         E_dscore = aggs$edges$dscore,
+        E_dscore_merge = aggs$edges$dscore_merge,
+        E_iter_merge = aggs$edges$iter_merge,
         
         d_mu=aggs$d_mu, ## for PCA based scoring 
         d_sig=aggs$d_sig, ## for PCA based scoring 

@@ -374,6 +374,8 @@ std::vector<std::list<unsigned> > merge_aggs_cpp(
     arma::vec & E_score_size,
     
     arma::vec & E_dscore,
+    arma::vec & E_dscore_merge,
+    arma::vec & E_iter_merge,
     
     double d_mu, 
     double d_sig, 
@@ -424,6 +426,8 @@ std::vector<std::list<unsigned> > merge_aggs_cpp(
             // Rcout << "Breaking on iter " << iter << endl;
             break; 
         }
+        E_dscore_merge(e_max) = E_dscore(e_max);
+        E_iter_merge(e_max) = iter;
         E_dscore(e_max) = -arma::datum::inf; 
         aggs_remove.push_back(to); 
     
