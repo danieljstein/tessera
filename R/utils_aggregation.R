@@ -73,7 +73,10 @@ init_scores = function(aggs, agg_mode, ...) {
         max_npts = list(...)[['max_npts']]
         stopifnot(!is.null(alpha))
         stopifnot(!is.null(max_npts))
-        
+        p_C = list(...)[['p_C']]
+        if(is.null(p_C)) {
+            p_C = 1
+        }
         
         # GMM to decide which distances are good or bad 
         d = sqrt(rowSums((aggs$pcs[aggs$edges$from, ] - aggs$pcs[aggs$edges$to, ])^2))
@@ -115,7 +118,7 @@ init_scores = function(aggs, agg_mode, ...) {
 
         aggs$d_mu = d_mu
         aggs$d_sig = d_sig
-        aggs$edges$dscore = aggs$edges$w * aggs$edges$score_size * dC
+        aggs$edges$dscore = aggs$edges$w * aggs$edges$score_size * (dC^p_C)
         # set dscore to -Inf if merge agg exceeds size thresholds
         # (-1 is lower than the lowest possible dscore, and allows the edge to be preserved in output)
         aggs$edges$dscore[aggs$edges$npts >= max_npts] = -1
@@ -124,6 +127,10 @@ init_scores = function(aggs, agg_mode, ...) {
         min_npts = list(...)[['min_npts']]
         stopifnot(!is.null(alpha))
         stopifnot(!is.null(min_npts))
+        p_C = list(...)[['p_C']]
+        if(is.null(p_C)) {
+            p_C = 1
+        }
         
         
         ## First, re-initialize all dscore values 
@@ -150,7 +157,7 @@ init_scores = function(aggs, agg_mode, ...) {
         C_merge = (4 * pi * aggs$edges$area) / (aggs$edges$perimeter_merge ^ 2)
         dC = .5 * (C_merge - C_from - C_to + 1) ## ranges from 0 to 1
 
-        aggs$edges$dscore = aggs$edges$w * aggs$edges$score_size * dC
+        aggs$edges$dscore = aggs$edges$w * aggs$edges$score_size * (dC^p_C)
 
         aggs$d_mu = d_mu
         aggs$d_sig = d_sig
@@ -352,6 +359,7 @@ color_aggs = function(aggs, seed=1) {
 merge_aggs = function(
     aggs, agg_mode, 
     d_mu=NULL, d_sig=NULL, iter_max=NULL,
+    p_C = 1,
     dscore_thresh=0,
     min_npts=0,
     max_npts=Inf,
@@ -422,6 +430,7 @@ merge_aggs = function(
         
         d_mu=aggs$d_mu, ## for PCA based scoring 
         d_sig=aggs$d_sig, ## for PCA based scoring 
+        p_C=p_C,
         # weight_size,
         # weight_compactness,
         # size_mu,
