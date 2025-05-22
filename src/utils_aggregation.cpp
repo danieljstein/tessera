@@ -231,6 +231,7 @@ void update_E_cpp(
     double d_mu, 
     double d_sig, 
     double p_C, 
+    double p_size,
     int agg_mode,
     double min_npts, 
     double max_npts 
@@ -286,7 +287,7 @@ void update_E_cpp(
             C_merge = (4 * arma::datum::pi * E_area(e_update)) / (E_perimeter_merge(e_update) % E_perimeter_merge(e_update)); 
             dC = .5 * (C_merge - C_from - C_to + 1); // ranges from 0 to 1
 
-            E_dscore(e_update) = E_w(e_update) % E_score_size(e_update) % pow(dC, p_C); 
+            E_dscore(e_update) = E_w(e_update) % pow(E_score_size(e_update), p_size) % pow(dC, p_C); 
             
             // set dscore to -Inf if merge agg exceeds size thresholds
             // (-1 is lower than the lowest possible dscore, and allows the edge to be preserved in output)
@@ -313,7 +314,7 @@ void update_E_cpp(
             C_merge = (4 * arma::datum::pi * E_area(e_update)) / (E_perimeter_merge(e_update) % E_perimeter_merge(e_update)); 
             dC = .5 * (C_merge - C_from - C_to + 1); // ranges from 0 to 1
 
-            E_dscore(e_update) = E_w(e_update) % E_score_size(e_update) % pow(dC, p_C); 
+            E_dscore(e_update) = E_w(e_update) % pow(E_score_size(e_update), p_size) % pow(dC, p_C); 
 
             // set dscore to -Inf if merge agg exceeds size thresholds
             // (-1 is lower than the lowest possible dscore, and allows the edge to be preserved in output)
@@ -381,6 +382,7 @@ std::vector<std::list<unsigned> > merge_aggs_cpp(
     double d_mu, 
     double d_sig, 
     double p_C, 
+    double p_size,
     unsigned iter_max,
     int agg_mode,
     double dscore_thresh,
@@ -543,6 +545,7 @@ std::vector<std::list<unsigned> > merge_aggs_cpp(
             d_mu, 
             d_sig, 
             p_C,
+            p_size,
             agg_mode,
             min_npts, 
             max_npts 

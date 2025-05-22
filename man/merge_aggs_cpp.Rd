@@ -24,6 +24,7 @@ merge_aggs_cpp(
   d_mu,
   d_sig,
   p_C,
+  p_size,
   iter_max,
   agg_mode,
   dscore_thresh,

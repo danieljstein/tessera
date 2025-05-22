@@ -107,8 +107,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // update_E_cpp
-void update_E_cpp(arma::mat& V_pcs, arma::vec& V_perimeter, arma::vec& V_area, arma::vec& V_npts, arma::uvec& E_from, arma::uvec& E_to, arma::vec& E_npts, arma::vec& E_area, arma::vec& E_edge_length, arma::mat& E_pcs_merge, arma::vec& E_w, arma::vec& E_perimeter_merge, arma::vec& E_score_size, arma::vec& E_dscore, arma::uvec& e_update, std::vector<std::list<unsigned> >& V_to_E_from, std::vector<std::list<unsigned> >& V_to_E_to, double d_mu, double d_sig, double p_C, int agg_mode, double min_npts, double max_npts);
-RcppExport SEXP _tessera_update_E_cpp(SEXP V_pcsSEXP, SEXP V_perimeterSEXP, SEXP V_areaSEXP, SEXP V_nptsSEXP, SEXP E_fromSEXP, SEXP E_toSEXP, SEXP E_nptsSEXP, SEXP E_areaSEXP, SEXP E_edge_lengthSEXP, SEXP E_pcs_mergeSEXP, SEXP E_wSEXP, SEXP E_perimeter_mergeSEXP, SEXP E_score_sizeSEXP, SEXP E_dscoreSEXP, SEXP e_updateSEXP, SEXP V_to_E_fromSEXP, SEXP V_to_E_toSEXP, SEXP d_muSEXP, SEXP d_sigSEXP, SEXP p_CSEXP, SEXP agg_modeSEXP, SEXP min_nptsSEXP, SEXP max_nptsSEXP) {
+void update_E_cpp(arma::mat& V_pcs, arma::vec& V_perimeter, arma::vec& V_area, arma::vec& V_npts, arma::uvec& E_from, arma::uvec& E_to, arma::vec& E_npts, arma::vec& E_area, arma::vec& E_edge_length, arma::mat& E_pcs_merge, arma::vec& E_w, arma::vec& E_perimeter_merge, arma::vec& E_score_size, arma::vec& E_dscore, arma::uvec& e_update, std::vector<std::list<unsigned> >& V_to_E_from, std::vector<std::list<unsigned> >& V_to_E_to, double d_mu, double d_sig, double p_C, double p_size, int agg_mode, double min_npts, double max_npts);
+RcppExport SEXP _tessera_update_E_cpp(SEXP V_pcsSEXP, SEXP V_perimeterSEXP, SEXP V_areaSEXP, SEXP V_nptsSEXP, SEXP E_fromSEXP, SEXP E_toSEXP, SEXP E_nptsSEXP, SEXP E_areaSEXP, SEXP E_edge_lengthSEXP, SEXP E_pcs_mergeSEXP, SEXP E_wSEXP, SEXP E_perimeter_mergeSEXP, SEXP E_score_sizeSEXP, SEXP E_dscoreSEXP, SEXP e_updateSEXP, SEXP V_to_E_fromSEXP, SEXP V_to_E_toSEXP, SEXP d_muSEXP, SEXP d_sigSEXP, SEXP p_CSEXP, SEXP p_sizeSEXP, SEXP agg_modeSEXP, SEXP min_nptsSEXP, SEXP max_nptsSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat& >::type V_pcs(V_pcsSEXP);
@@ -131,16 +131,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type d_mu(d_muSEXP);
     Rcpp::traits::input_parameter< double >::type d_sig(d_sigSEXP);
     Rcpp::traits::input_parameter< double >::type p_C(p_CSEXP);
+    Rcpp::traits::input_parameter< double >::type p_size(p_sizeSEXP);
     Rcpp::traits::input_parameter< int >::type agg_mode(agg_modeSEXP);
     Rcpp::traits::input_parameter< double >::type min_npts(min_nptsSEXP);
     Rcpp::traits::input_parameter< double >::type max_npts(max_nptsSEXP);
-    update_E_cpp(V_pcs, V_perimeter, V_area, V_npts, E_from, E_to, E_npts, E_area, E_edge_length, E_pcs_merge, E_w, E_perimeter_merge, E_score_size, E_dscore, e_update, V_to_E_from, V_to_E_to, d_mu, d_sig, p_C, agg_mode, min_npts, max_npts);
+    update_E_cpp(V_pcs, V_perimeter, V_area, V_npts, E_from, E_to, E_npts, E_area, E_edge_length, E_pcs_merge, E_w, E_perimeter_merge, E_score_size, E_dscore, e_update, V_to_E_from, V_to_E_to, d_mu, d_sig, p_C, p_size, agg_mode, min_npts, max_npts);
     return R_NilValue;
 END_RCPP
 }
 // merge_aggs_cpp
-std::vector<std::list<unsigned> > merge_aggs_cpp(arma::mat& V_pcs, arma::vec& V_area, arma::vec& V_perimeter, arma::vec& V_npts, arma::uvec& E_from, arma::uvec& E_to, arma::vec& E_npts, arma::vec& E_area, arma::vec& E_edge_length, arma::mat& E_pcs_merge, arma::vec& E_w, arma::vec& E_perimeter_merge, arma::vec& E_score_size, arma::vec& E_dscore, arma::vec& E_dscore_merge, arma::vec& E_iter_merge, double d_mu, double d_sig, double p_C, unsigned iter_max, int agg_mode, double dscore_thresh, double min_npts, double max_npts);
-RcppExport SEXP _tessera_merge_aggs_cpp(SEXP V_pcsSEXP, SEXP V_areaSEXP, SEXP V_perimeterSEXP, SEXP V_nptsSEXP, SEXP E_fromSEXP, SEXP E_toSEXP, SEXP E_nptsSEXP, SEXP E_areaSEXP, SEXP E_edge_lengthSEXP, SEXP E_pcs_mergeSEXP, SEXP E_wSEXP, SEXP E_perimeter_mergeSEXP, SEXP E_score_sizeSEXP, SEXP E_dscoreSEXP, SEXP E_dscore_mergeSEXP, SEXP E_iter_mergeSEXP, SEXP d_muSEXP, SEXP d_sigSEXP, SEXP p_CSEXP, SEXP iter_maxSEXP, SEXP agg_modeSEXP, SEXP dscore_threshSEXP, SEXP min_nptsSEXP, SEXP max_nptsSEXP) {
+std::vector<std::list<unsigned> > merge_aggs_cpp(arma::mat& V_pcs, arma::vec& V_area, arma::vec& V_perimeter, arma::vec& V_npts, arma::uvec& E_from, arma::uvec& E_to, arma::vec& E_npts, arma::vec& E_area, arma::vec& E_edge_length, arma::mat& E_pcs_merge, arma::vec& E_w, arma::vec& E_perimeter_merge, arma::vec& E_score_size, arma::vec& E_dscore, arma::vec& E_dscore_merge, arma::vec& E_iter_merge, double d_mu, double d_sig, double p_C, double p_size, unsigned iter_max, int agg_mode, double dscore_thresh, double min_npts, double max_npts);
+RcppExport SEXP _tessera_merge_aggs_cpp(SEXP V_pcsSEXP, SEXP V_areaSEXP, SEXP V_perimeterSEXP, SEXP V_nptsSEXP, SEXP E_fromSEXP, SEXP E_toSEXP, SEXP E_nptsSEXP, SEXP E_areaSEXP, SEXP E_edge_lengthSEXP, SEXP E_pcs_mergeSEXP, SEXP E_wSEXP, SEXP E_perimeter_mergeSEXP, SEXP E_score_sizeSEXP, SEXP E_dscoreSEXP, SEXP E_dscore_mergeSEXP, SEXP E_iter_mergeSEXP, SEXP d_muSEXP, SEXP d_sigSEXP, SEXP p_CSEXP, SEXP p_sizeSEXP, SEXP iter_maxSEXP, SEXP agg_modeSEXP, SEXP dscore_threshSEXP, SEXP min_nptsSEXP, SEXP max_nptsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -163,12 +164,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type d_mu(d_muSEXP);
     Rcpp::traits::input_parameter< double >::type d_sig(d_sigSEXP);
     Rcpp::traits::input_parameter< double >::type p_C(p_CSEXP);
+    Rcpp::traits::input_parameter< double >::type p_size(p_sizeSEXP);
     Rcpp::traits::input_parameter< unsigned >::type iter_max(iter_maxSEXP);
     Rcpp::traits::input_parameter< int >::type agg_mode(agg_modeSEXP);
     Rcpp::traits::input_parameter< double >::type dscore_thresh(dscore_threshSEXP);
     Rcpp::traits::input_parameter< double >::type min_npts(min_nptsSEXP);
     Rcpp::traits::input_parameter< double >::type max_npts(max_nptsSEXP);
-    rcpp_result_gen = Rcpp::wrap(merge_aggs_cpp(V_pcs, V_area, V_perimeter, V_npts, E_from, E_to, E_npts, E_area, E_edge_length, E_pcs_merge, E_w, E_perimeter_merge, E_score_size, E_dscore, E_dscore_merge, E_iter_merge, d_mu, d_sig, p_C, iter_max, agg_mode, dscore_thresh, min_npts, max_npts));
+    rcpp_result_gen = Rcpp::wrap(merge_aggs_cpp(V_pcs, V_area, V_perimeter, V_npts, E_from, E_to, E_npts, E_area, E_edge_length, E_pcs_merge, E_w, E_perimeter_merge, E_score_size, E_dscore, E_dscore_merge, E_iter_merge, d_mu, d_sig, p_C, p_size, iter_max, agg_mode, dscore_thresh, min_npts, max_npts));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -442,8 +444,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_tessera_mergeListsToArmaUVec", (DL_FUNC) &_tessera_mergeListsToArmaUVec, 2},
     {"_tessera_findDuplicates", (DL_FUNC) &_tessera_findDuplicates, 1},
     {"_tessera_update_V_cpp", (DL_FUNC) &_tessera_update_V_cpp, 11},
-    {"_tessera_update_E_cpp", (DL_FUNC) &_tessera_update_E_cpp, 23},
-    {"_tessera_merge_aggs_cpp", (DL_FUNC) &_tessera_merge_aggs_cpp, 24},
+    {"_tessera_update_E_cpp", (DL_FUNC) &_tessera_update_E_cpp, 24},
+    {"_tessera_merge_aggs_cpp", (DL_FUNC) &_tessera_merge_aggs_cpp, 25},
     {"_tessera_foo_triplets_edges", (DL_FUNC) &_tessera_foo_triplets_edges, 2},
     {"_tessera_do_dmt_forest_cpp", (DL_FUNC) &_tessera_do_dmt_forest_cpp, 4},
     {"_tessera_trace_back_cpp", (DL_FUNC) &_tessera_trace_back_cpp, 4},

@@ -11,6 +11,7 @@ merge_aggs(
   d_sig = NULL,
   iter_max = NULL,
   p_C = 1,
+  p_size = 1,
   dscore_thresh = 0,
   min_npts = 0,
   max_npts = Inf,

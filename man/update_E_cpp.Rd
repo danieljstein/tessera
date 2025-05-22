@@ -25,6 +25,7 @@ update_E_cpp(
   d_mu,
   d_sig,
   p_C,
+  p_size,
   agg_mode,
   min_npts,
   max_npts
