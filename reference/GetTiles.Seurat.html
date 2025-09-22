@@ -53,6 +53,7 @@
 <span>  tile.id.name <span class="op">=</span> <span class="st">"tile_id"</span>,</span>
 <span>  reduction.name <span class="op">=</span> <span class="st">"pca"</span>,</span>
 <span>  graph.name <span class="op">=</span> <span class="st">"tile_adj"</span>,</span>
+<span>  add.isolated.cells <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -89,12 +90,17 @@ If missing, cell embeddings are calculated using PCA. If provided, the <code>npc
 
 
 <dt id="arg-reduction-name">reduction.name<a class="anchor" aria-label="anchor" href="#arg-reduction-name"></a></dt>
-<dd><p>Name of dimesional reduction to store the aggregated tile-level embeddings
+<dd><p>Name of dimensional reduction to store the aggregated tile-level embeddings
 in the tile-level Seurat object.</p></dd>
 
 
 <dt id="arg-graph-name">graph.name<a class="anchor" aria-label="anchor" href="#arg-graph-name"></a></dt>
-<dd><p>Nmae of graph to store tile adjacency matrix in the tile-level Seurat object.</p></dd>
+<dd><p>Name of graph to store tile adjacency matrix in the tile-level Seurat object.</p></dd>
+
+
+<dt id="arg-add-isolated-cells">add.isolated.cells<a class="anchor" aria-label="anchor" href="#arg-add-isolated-cells"></a></dt>
+<dd><p>Whether to add back isolated single cells that were pruned out.
+Only applies when <code>embeddings</code> are provided. Defaults to TRUE.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -146,6 +152,10 @@ agglomerative clustering phase.</p></dd>
     <dt><code>alpha</code></dt>
 <dd><p>Parameter for scoring transcriptional similarity between adjacent tiles during
 the agglomerative clustering phase. For <code>alpha</code>, 0.2 = conservative merging, 2 = liberal merging.</p></dd>
+
+    <dt><code>future.globals.maxSize</code></dt>
+<dd><p>Maximum allowed size (in bytes) of global variables that are exported to each parallel worker.
+Increase this value if you get an error about global object size. Default is 8*1024^3 (8 GB).</p></dd>
 
     <dt><code>consolidate</code></dt>
 <dd><p>Whether to consolidate results from multiple groups into a single collection of

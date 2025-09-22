@@ -125,6 +125,7 @@ of cells in order to prioritize favorable merges in each agglomerative clusterin
 <span>  alpha <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  .progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  .options <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  future.globals.maxSize <span class="op">=</span> <span class="fl">8</span> <span class="op">*</span> <span class="fl">1024</span><span class="op">^</span><span class="fl">3</span>,</span>
 <span>  consolidate <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -215,6 +216,11 @@ agglomerative clustering phase.</p></dd>
 <dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
 <dd><p>Parameter for scoring transcriptional similarity between adjacent tiles during
 the agglomerative clustering phase. For <code>alpha</code>, 0.2 = conservative merging, 2 = liberal merging.</p></dd>
+
+
+<dt id="arg-future-globals-maxsize">future.globals.maxSize<a class="anchor" aria-label="anchor" href="#arg-future-globals-maxsize"></a></dt>
+<dd><p>Maximum allowed size (in bytes) of global variables that are exported to each parallel worker.
+Increase this value if you get an error about global object size. Default is 8*1024^3 (8 GB).</p></dd>
 
 
 <dt id="arg-consolidate">consolidate<a class="anchor" aria-label="anchor" href="#arg-consolidate"></a></dt>
