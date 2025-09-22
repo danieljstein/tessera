@@ -13,6 +13,7 @@
   tile.id.name = "tile_id",
   reduction.name = "pca",
   graph.name = "tile_adj",
+  add.isolated.cells = TRUE,
   ...
 )
 }
@@ -32,10 +33,13 @@ If missing, cell embeddings are calculated using PCA. If provided, the \code{npc
 
 \item{tile.id.name}{Name of variable to store the tile IDs in the cell-level Seurat object.}
 
-\item{reduction.name}{Name of dimesional reduction to store the aggregated tile-level embeddings
+\item{reduction.name}{Name of dimensional reduction to store the aggregated tile-level embeddings
 in the tile-level Seurat object.}
 
-\item{graph.name}{Nmae of graph to store tile adjacency matrix in the tile-level Seurat object.}
+\item{graph.name}{Name of graph to store tile adjacency matrix in the tile-level Seurat object.}
+
+\item{add.isolated.cells}{Whether to add back isolated single cells that were pruned out.
+Only applies when \code{embeddings} are provided. Defaults to TRUE.}
 
 \item{...}{
   Arguments passed on to \code{\link[=GetTiles.default]{GetTiles.default}}
@@ -65,6 +69,8 @@ agglomerative clustering phase.}
 agglomerative clustering phase.}
     \item{\code{alpha}}{Parameter for scoring transcriptional similarity between adjacent tiles during
 the agglomerative clustering phase. For \code{alpha}, 0.2 = conservative merging, 2 = liberal merging.}
+    \item{\code{future.globals.maxSize}}{Maximum allowed size (in bytes) of global variables that are exported to each parallel worker.
+Increase this value if you get an error about global object size. Default is 8*1024^3 (8 GB).}
     \item{\code{consolidate}}{Whether to consolidate results from multiple groups into a single collection of
 points and tiles (TRUE) or to return a list of separate results for each group (FALSE).}
     \item{\code{verbose}}{Whether to print progress messages for each stage of the segmentation pipeline.}
