@@ -90,16 +90,6 @@ GetTiles.Seurat = function(
 
     stopifnot(all(colnames(res$aggs$counts) == res$aggs$meta_data$id))
 
-    # Add tile IDs to input Seurat object
-    if (tile.id.name %in% colnames(obj@meta.data)) {
-        tile.id.name = tail(make.unique(c(colnames(obj@meta.data), tile.id.name)), n = 1) # avoid overwriting existing columns
-        warning(paste0('To avoid overwriting existing meta.data variables, tile.id.name is set to ', tile.id.name))
-    }
-    obj@meta.data[[tile.id.name]] = as.character(NA)
-    obj@meta.data[[tile.id.name]][res$dmt$pts$ORIG_ID] = res$dmt$pts$agg_id
-    obj@meta.data[[tile.id.name]] = factor(obj@meta.data[[tile.id.name]])
-
-
     # Make Seurat object of tiles
     meta.data = data.frame(dplyr::select(res$aggs$meta_data, -shape))
     row.names(meta.data) = meta.data$id
@@ -115,6 +105,18 @@ GetTiles.Seurat = function(
     row.names(res$aggs$pcs) = colnames(tile_obj)
     tile_obj[[reduction.name]] <- Seurat::CreateDimReducObject(embeddings = res$aggs$pcs, key = reduction.name)
     tile_obj[[graph.name]] = Seurat::as.Graph(res$aggs$adj)
+
+    # Add tile IDs to input Seurat object
+    if (tile.id.name %in% colnames(obj@meta.data)) {
+        tile.id.name = tail(make.unique(c(colnames(obj@meta.data), tile.id.name)), n = 1) # avoid overwriting existing columns
+        warning(paste0('To avoid overwriting existing meta.data variables, tile.id.name is set to ', tile.id.name))
+    }
+    obj@meta.data[[tile.id.name]] = as.character(NA)
+    obj@meta.data[[tile.id.name]][res$dmt$pts$ORIG_ID] = res$dmt$pts$agg_id
+    obj@meta.data[[tile.id.name]] = factor(
+        obj@meta.data[[tile.id.name]],
+        levels=tile_obj@meta.data$id   # match factor levels to order in tile_obj
+    )
 
     return(list(obj=obj, tile_obj=tile_obj))
 }
