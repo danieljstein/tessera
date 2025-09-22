@@ -37,9 +37,11 @@ GetTiles = function(...) {
 #' @param assay Seurat assay to pull data for when using the cell counts. Defaults to the DefaultAssay.
 #' @param raw_results Whether to return the raw results from [GetTiles.default()].
 #' @param tile.id.name Name of variable to store the tile IDs in the cell-level Seurat object.
-#' @param reduction.name Name of dimesional reduction to store the aggregated tile-level embeddings
+#' @param reduction.name Name of dimensional reduction to store the aggregated tile-level embeddings
 #'   in the tile-level Seurat object.
-#' @param graph.name Nmae of graph to store tile adjacency matrix in the tile-level Seurat object.
+#' @param graph.name Name of graph to store tile adjacency matrix in the tile-level Seurat object.
+#' @param add.isolated.cells Whether to add back isolated single cells that were pruned out.
+#'   Only applies when `embeddings` are provided. Defaults to TRUE.
 #' @inheritDotParams GetTiles.default -X -Y -counts -embeddings -loadings -meta_data
 #' 
 #' @returns A List containing a pair of Seurat objects:
@@ -56,6 +58,7 @@ GetTiles.Seurat = function(
     tile.id.name = 'tile_id',
     reduction.name = 'pca',
     graph.name = 'tile_adj',
+    add.isolated.cells = TRUE,
     ...
 ) {
     rlang::check_installed("Seurat", reason = "to use `GetTiles.Seurat()`")
@@ -76,6 +79,7 @@ GetTiles.Seurat = function(
         load <- NULL
     }
 
+    # Run Tessera
     res = GetTiles(
         X = Seurat::Embeddings(obj, spatial)[,1],
         Y = Seurat::Embeddings(obj, spatial)[,2],
@@ -90,21 +94,14 @@ GetTiles.Seurat = function(
 
     stopifnot(all(colnames(res$aggs$counts) == res$aggs$meta_data$id))
 
-    # Make Seurat object of tiles
+    # Collect tile metadata
     meta.data = data.frame(dplyr::select(res$aggs$meta_data, -shape))
+    tile.shapes = res$aggs$meta_data$shape
+    tile.counts = res$aggs$counts
+    tile.embeddings = res$aggs$pcs
     row.names(meta.data) = meta.data$id
     stopifnot(all(colnames(res$aggs$counts) == res$aggs$meta_data$id))
     stopifnot(all(colnames(res$aggs$counts) == row.names(meta.data)))
-
-    tile_obj = Seurat::CreateSeuratObject(
-        counts = res$aggs$counts,
-        meta.data = meta.data
-    )
-    ## Seurat doesn't do sf shapes well 
-    tile_obj@meta.data$shape = res$aggs$meta_data$shape
-    row.names(res$aggs$pcs) = colnames(tile_obj)
-    tile_obj[[reduction.name]] <- Seurat::CreateDimReducObject(embeddings = res$aggs$pcs, key = reduction.name)
-    tile_obj[[graph.name]] = Seurat::as.Graph(res$aggs$adj)
 
     # Add tile IDs to input Seurat object
     if (tile.id.name %in% colnames(obj@meta.data)) {
@@ -113,9 +110,58 @@ GetTiles.Seurat = function(
     }
     obj@meta.data[[tile.id.name]] = as.character(NA)
     obj@meta.data[[tile.id.name]][res$dmt$pts$ORIG_ID] = res$dmt$pts$agg_id
+
+    # (Optional) Add back isolated single cells that were pruned out
+    if (add.isolated.cells & !is.null(embeddings)) {
+        isolated_cells = which(is.na(obj@meta.data[[tile.id.name]]))
+        
+        if (length(isolated_cells) > 0) {
+            warning(paste0('Adding back ', length(isolated_cells), ' isolated cells that were pruned out'))
+
+            new_tiles_metadata = data.frame(
+                id = seq_len(length(isolated_cells)) + ncol(tile_obj),
+                X = Seurat::Embeddings(obj, spatial)[,1][isolated_cells],
+                Y = Seurat::Embeddings(obj, spatial)[,2][isolated_cells],
+                npts = 1,
+                area = as.numeric(NA),
+                perimeter = as.numeric(NA)
+            )
+            new_tiles_metadata$id = tail(
+                make.unique(c(res$aggs$meta_data$id, as.character(new_tiles_metadata$id))),
+                n = length(new_tiles_metadata$id)
+            )
+            rownames(new_tiles_metadata) = new_tiles_metadata$id
+
+            new_counts = obj[[assay]]$counts[,isolated_cells,drop=FALSE]
+            colnames(new_counts) = new_tiles_metadata$id
+            stopifnot(all(rownames(new_counts) == rownames(tile.counts)))
+
+            new_tiles_embeddings = emb[isolated_cells,]
+            colnames(new_tiles_embeddings) = colnames(tile.embeddings)
+            rownames(new_tiles_embeddings) = new_tiles_metadata$id
+
+            meta.data = rbind(meta.data, new_tiles_metadata)
+            tile.shapes = c(tile.shapes, sf::st_sfc(rep(list(sf::st_multipolygon()), length(isolated_cells))))
+            tile.counts = cbind(tile.counts, new_counts)
+            tile.embeddings = rbind(tile.embeddings, new_tiles_embeddings)
+        }
+    }
+
+    # Make Seurat object of tiles
+    tile_obj = Seurat::CreateSeuratObject(
+        counts = tile.counts,
+        meta.data = meta.data
+    )
+    ## Seurat doesn't do sf shapes well
+    tile_obj@meta.data$shape = tile.shapes
+    row.names(tile.embeddings) = colnames(tile_obj)
+    tile_obj[[reduction.name]] <- Seurat::CreateDimReducObject(embeddings = tile.embeddings, key = reduction.name)
+    tile_obj[[graph.name]] = Seurat::as.Graph(res$aggs$adj)
+
+    # Match tile_id factor levels to order in tile_obj
     obj@meta.data[[tile.id.name]] = factor(
         obj@meta.data[[tile.id.name]],
-        levels=tile_obj@meta.data$id   # match factor levels to order in tile_obj
+        levels=tile_obj@meta.data$id
     )
 
     return(list(obj=obj, tile_obj=tile_obj))
