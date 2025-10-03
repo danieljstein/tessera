@@ -59,6 +59,9 @@ RunUMAPCustom(
 
 \item{...}{Additional parameters to pass to \code{uwot::umap}.}
 }
+\value{
+The input Seurat object with the fgraph and (optionally) UMAP embeddings added.
+}
 \description{
 Run UMAP and save fgraph and embeddings in Seurat object
 }
