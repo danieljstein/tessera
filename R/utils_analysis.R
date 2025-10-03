@@ -17,6 +17,8 @@
 #' @param fast_sgd Whether to use the fast stochastic gradient descent optimization in UMAP. See `?uwot::umap` for details.
 #' @param verbose Whether to print progress messages.
 #' @param ... Additional parameters to pass to `uwot::umap`.
+#' 
+#' @returns The input Seurat object with the fgraph and (optionally) UMAP embeddings added.
 #'
 #' @export
 RunUMAPCustom = function(
