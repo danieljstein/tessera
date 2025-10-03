@@ -35,6 +35,7 @@ GetTiles = function(...) {
 #'   (a `num_cells` x `num_dim` matrix of cell embeddings across all latent dimensions).
 #'   If missing, cell embeddings are calculated using PCA. If provided, the `npcs` parameter is ignored.
 #' @param assay Seurat assay to pull data for when using the cell counts. Defaults to the DefaultAssay.
+#' @param group.by Name of column in `obj@meta.data` to use for grouping cells into separate samples.
 #' @param raw_results Whether to return the raw results from [GetTiles.default()].
 #' @param tile.id.name Name of variable to store the tile IDs in the cell-level Seurat object.
 #' @param reduction.name Name of dimensional reduction to store the aggregated tile-level embeddings
@@ -54,6 +55,7 @@ GetTiles.Seurat = function(
     spatial,
     embeddings = NULL,
     assay = NULL,
+    group.by = NULL,
     raw_results = FALSE,
     tile.id.name = 'tile_id',
     reduction.name = 'pca',
@@ -79,6 +81,21 @@ GetTiles.Seurat = function(
         load <- NULL
     }
 
+    if (is.null(group.by)) {
+        warning('No value for group.by provided. Analyzing as a single sample.')
+        if (is.null(obj@meta.data)) {
+            group.by = 'group'
+            obj@meta.data = data.frame(group = factor(rep(1, length(X))))
+        } else {
+            group.by = tail(make.unique(c(colnames(obj@meta.data), 'group')), n = 1) # avoid overwriting existing columns
+            obj@meta.data[[group.by]] = factor(rep(1, length(X)))
+        }
+    } else {
+        if (!(group.by %in% colnames(obj@meta.data))) {
+            stop('group.by must be a column of meta.data')
+        }
+    }
+
     # Run Tessera
     res = GetTiles(
         X = Seurat::Embeddings(obj, spatial)[,1],
@@ -87,6 +104,7 @@ GetTiles.Seurat = function(
         embeddings = emb,
         loadings = load,
         meta_data = obj@meta.data,
+        group.by = group.by,
         ...
     )
 
@@ -126,11 +144,14 @@ GetTiles.Seurat = function(
                 area = as.numeric(NA),
                 perimeter = as.numeric(NA)
             )
+            new_tiles_metadata[[group.by]] = obj@meta.data[[group.by]][isolated_cells]
             new_tiles_metadata$id = tail(
                 make.unique(c(res$aggs$meta_data$id, as.character(new_tiles_metadata$id))),
                 n = length(new_tiles_metadata$id)
             )
             rownames(new_tiles_metadata) = new_tiles_metadata$id
+
+            obj@meta.data[[tile.id.name]][isolated_cells] = new_tiles_metadata$id
 
             new_counts = obj[[assay]]$counts[,isolated_cells,drop=FALSE]
             colnames(new_counts) = new_tiles_metadata$id
