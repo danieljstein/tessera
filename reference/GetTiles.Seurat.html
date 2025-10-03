@@ -49,6 +49,7 @@
 <span>  <span class="va">spatial</span>,</span>
 <span>  embeddings <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  assay <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  group.by <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  raw_results <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  tile.id.name <span class="op">=</span> <span class="st">"tile_id"</span>,</span>
 <span>  reduction.name <span class="op">=</span> <span class="st">"pca"</span>,</span>
@@ -81,6 +82,10 @@ If missing, cell embeddings are calculated using PCA. If provided, the <code>npc
 <dd><p>Seurat assay to pull data for when using the cell counts. Defaults to the DefaultAssay.</p></dd>
 
 
+<dt id="arg-group-by">group.by<a class="anchor" aria-label="anchor" href="#arg-group-by"></a></dt>
+<dd><p>Name of column in <code>obj@meta.data</code> to use for grouping cells into separate samples.</p></dd>
+
+
 <dt id="arg-raw-results">raw_results<a class="anchor" aria-label="anchor" href="#arg-raw-results"></a></dt>
 <dd><p>Whether to return the raw results from <code><a href="GetTiles.default.html">GetTiles.default()</a></code>.</p></dd>
 
@@ -106,10 +111,6 @@ Only applies when <code>embeddings</code> are provided. Defaults to TRUE.</p></d
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Arguments passed on to <code><a href="GetTiles.default.html">GetTiles.default</a></code></p><dl><dt><code>meta_vars_include</code></dt>
 <dd><p>Names of columns in meta_data to include in <code>dmt$pts</code>.</p></dd>
-
-    <dt><code>group.by</code></dt>
-<dd><p>Name of column in <code>meta_data</code> that provides the group IDs. Tessera tiles are
-constructed separately for each group (which could be separate experimental samples or FOVs).</p></dd>
 
     <dt><code>npcs</code></dt>
 <dd><p>Number of PCs to compute for input to segmentation.</p></dd>
