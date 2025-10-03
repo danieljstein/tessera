@@ -9,6 +9,7 @@
   spatial,
   embeddings = NULL,
   assay = NULL,
+  group.by = NULL,
   raw_results = FALSE,
   tile.id.name = "tile_id",
   reduction.name = "pca",
@@ -29,6 +30,8 @@ If missing, cell embeddings are calculated using PCA. If provided, the \code{npc
 
 \item{assay}{Seurat assay to pull data for when using the cell counts. Defaults to the DefaultAssay.}
 
+\item{group.by}{Name of column in \code{obj@meta.data} to use for grouping cells into separate samples.}
+
 \item{raw_results}{Whether to return the raw results from \code{\link[=GetTiles.default]{GetTiles.default()}}.}
 
 \item{tile.id.name}{Name of variable to store the tile IDs in the cell-level Seurat object.}
@@ -45,8 +48,6 @@ Only applies when \code{embeddings} are provided. Defaults to TRUE.}
   Arguments passed on to \code{\link[=GetTiles.default]{GetTiles.default}}
   \describe{
     \item{\code{meta_vars_include}}{Names of columns in meta_data to include in \code{dmt$pts}.}
-    \item{\code{group.by}}{Name of column in \code{meta_data} that provides the group IDs. Tessera tiles are
-constructed separately for each group (which could be separate experimental samples or FOVs).}
     \item{\code{npcs}}{Number of PCs to compute for input to segmentation.}
     \item{\code{prune_thresh_quantile}}{Floating point value between 0 and 1, inclusive.
 Quantile of edge length above which edges are pruned. Defaults to 0.95.}
