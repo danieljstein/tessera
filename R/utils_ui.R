@@ -119,7 +119,7 @@ GetTiles.Seurat = function(
             warning(paste0('Adding back ', length(isolated_cells), ' isolated cells that were pruned out'))
 
             new_tiles_metadata = data.frame(
-                id = seq_len(length(isolated_cells)) + ncol(tile_obj),
+                id = seq_len(length(isolated_cells)) + ncol(tile.counts),
                 X = Seurat::Embeddings(obj, spatial)[,1][isolated_cells],
                 Y = Seurat::Embeddings(obj, spatial)[,2][isolated_cells],
                 npts = 1,
