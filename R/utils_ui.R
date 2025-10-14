@@ -85,10 +85,10 @@ GetTiles.Seurat = function(
         warning('No value for group.by provided. Analyzing as a single sample.')
         if (is.null(obj@meta.data)) {
             group.by = 'group'
-            obj@meta.data = data.frame(group = factor(rep(1, length(X))))
+            obj@meta.data = data.frame(group = factor(rep(1, nrow(obj@meta.data))))
         } else {
             group.by = tail(make.unique(c(colnames(obj@meta.data), 'group')), n = 1) # avoid overwriting existing columns
-            obj@meta.data[[group.by]] = factor(rep(1, length(X)))
+            obj@meta.data[[group.by]] = factor(rep(1, nrow(obj@meta.data)))
         }
     } else {
         if (!(group.by %in% colnames(obj@meta.data))) {
