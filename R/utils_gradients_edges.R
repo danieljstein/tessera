@@ -32,8 +32,8 @@ smooth_field_edges = function(
     }
 
     res = smooth_field_edges_cpp(
-        dmt$edges$from_pt-1, # input is 0-indexed
-        dmt$edges$to_pt-1, # input is 0-indexed
+        edges$from_pt-1, # input is 0-indexed
+        edges$to_pt-1, # input is 0-indexed
         field,   # arma::cube shape (2, D, E)
         edges_svd, # u, s, v
         coords,   # arma::mat shape (N, 2)
@@ -45,6 +45,7 @@ smooth_field_edges = function(
 
     return(res)
 }
+
 #' Compute spatial gradient field for input to DMT
 #'
 #' @export
