@@ -59,7 +59,7 @@ compute_gradients_edges = function(
 
     ## First on edges
     coords = as.matrix(dmt$pts[, .(X, Y)])
-    adj_idx = sparseMatrix(
+    adj_idx = Matrix::sparseMatrix(
         i = c(dmt$edges$from_pt, dmt$edges$to_pt),
         j = c(dmt$edges$to_pt, dmt$edges$from_pt),
         x = c(seq_len(nrow(dmt$edges)),
@@ -93,26 +93,26 @@ compute_gradients_edges = function(
     }
 
     ## Field on tris: average of gradients for boundary edges
-    tri_to_edge = sparseMatrix(
+    tri_to_edge = Matrix::sparseMatrix(
         i = c(dmt$edges$from_tri, dmt$edges$to_tri),
         j = c(seq_len(nrow(dmt$edges)), seq_len(nrow(dmt$edges))),
         x = 1,
         dims = c(nrow(dmt$tris), nrow(dmt$edges))
     )  # every edge has 2 triangles, every triangle has 3 edges, or 1 if degenerate
-    tri_to_edge = tri_to_edge / rowSums(tri_to_edge)
+    tri_to_edge = tri_to_edge / Matrix::rowSums(tri_to_edge)
 
     field$tris = array(dim = c(2, dim(field$edges)[2], nrow(dmt$tris)))
     field$tris[1,,] = as.matrix(Matrix::tcrossprod(field$edges[1,,], tri_to_edge))
     field$tris[2,,] = as.matrix(Matrix::tcrossprod(field$edges[2,,], tri_to_edge))
 
     ## Field on pts: average of gradients for incoming edges
-    pt_to_edge = sparseMatrix(
+    pt_to_edge = Matrix::sparseMatrix(
         i = c(dmt$edges$from_pt, dmt$edges$to_pt),
         j = c(seq_len(nrow(dmt$edges)), seq_len(nrow(dmt$edges))),
         x = 1,
         dims = c(nrow(dmt$pts), nrow(dmt$edges))
     )  # every edge has 2 pts, each pt can have a range of neighbors
-    pt_to_edge = pt_to_edge / rowSums(pt_to_edge)
+    pt_to_edge = pt_to_edge / Matrix::rowSums(pt_to_edge)
 
     field$pts = array(dim = c(2, dim(field$edges)[2], nrow(dmt$pts)))
     field$pts[1,,] = as.matrix(Matrix::tcrossprod(field$edges[1,,], pt_to_edge))
