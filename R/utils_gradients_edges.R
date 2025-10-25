@@ -65,7 +65,7 @@ compute_gradients_edges = function(
               seq_len(nrow(dmt$edges))),  # 1-indexed edges
         dims = c(nrow(dmt$pts), nrow(dmt$pts))
     )
-    stopifnot(all(diag(adj_idx) == 0))
+    stopifnot(all(Matrix::diag(adj_idx) == 0))
 
     embeddings = dmt$udv_cells$embeddings
     field$edges = estimate_field_edges_cpp(
