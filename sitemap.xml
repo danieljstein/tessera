@@ -16,6 +16,7 @@
 <url><loc>https://korsunskylab.github.io/tessera/reference/compress_field_cpp.html</loc></url>
 <url><loc>https://korsunskylab.github.io/tessera/reference/compress_gradients_svd.html</loc></url>
 <url><loc>https://korsunskylab.github.io/tessera/reference/compute_gradients.html</loc></url>
+<url><loc>https://korsunskylab.github.io/tessera/reference/compute_gradients_edges.html</loc></url>
 <url><loc>https://korsunskylab.github.io/tessera/reference/dmt_assign_tiles.html</loc></url>
 <url><loc>https://korsunskylab.github.io/tessera/reference/dmt_get_separatrices.html</loc></url>
 <url><loc>https://korsunskylab.github.io/tessera/reference/dmt_init_tiles.html</loc></url>
@@ -47,6 +48,7 @@
 <url><loc>https://korsunskylab.github.io/tessera/reference/scale_data.html</loc></url>
 <url><loc>https://korsunskylab.github.io/tessera/reference/smooth_field.html</loc></url>
 <url><loc>https://korsunskylab.github.io/tessera/reference/smooth_field_cpp.html</loc></url>
+<url><loc>https://korsunskylab.github.io/tessera/reference/smooth_field_edges.html</loc></url>
 <url><loc>https://korsunskylab.github.io/tessera/reference/smooth_field_edges_cpp.html</loc></url>
 <url><loc>https://korsunskylab.github.io/tessera/reference/svd_field_cpp.html</loc></url>
 <url><loc>https://korsunskylab.github.io/tessera/reference/tessera.html</loc></url>
