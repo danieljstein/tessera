@@ -114,6 +114,7 @@ of cells in order to prioritize favorable merges in each agglomerative clusterin
 <span>  meta_vars_include <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  group.by <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  npcs <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  smooth_emb <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  prune_thresh_quantile <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span>  prune_min_cells <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  prune_thresh <span class="op">=</span> <span class="cn">NA</span>,</span>
@@ -168,7 +169,13 @@ constructed separately for each group (which could be separate experimental samp
 
 
 <dt id="arg-npcs">npcs<a class="anchor" aria-label="anchor" href="#arg-npcs"></a></dt>
-<dd><p>Number of PCs to compute for input to segmentation.</p></dd>
+<dd><p>Number of PCs to compute for input to segmentation.
+Ignored if <code>embeddings</code> are provided directly.</p></dd>
+
+
+<dt id="arg-smooth-emb">smooth_emb<a class="anchor" aria-label="anchor" href="#arg-smooth-emb"></a></dt>
+<dd><p>Number of smoothing iterations to perform on the cell embeddings
+prior to gradient computation.</p></dd>
 
 
 <dt id="arg-prune-thresh-quantile">prune_thresh_quantile<a class="anchor" aria-label="anchor" href="#arg-prune-thresh-quantile"></a></dt>
@@ -400,8 +407,8 @@ have at least <code>min_npts</code> cells, to prioritize merging of small tiles.
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other GetTiles:
-<code><a href="GetTiles.html">GetTiles</a>()</code>,
-<code><a href="GetTiles.Seurat.html">GetTiles.Seurat</a>()</code></p></div>
+<code><a href="GetTiles.html">GetTiles()</a></code>,
+<code><a href="GetTiles.Seurat.html">GetTiles.Seurat()</a></code></p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -413,7 +420,7 @@ have at least <code>min_npts</code> cells, to prioritize merging of small tiles.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
