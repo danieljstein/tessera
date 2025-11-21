@@ -96,7 +96,7 @@ smooth_embedding = function(
 
     adj = as.matrix(igraph::from_edgelist()$fun(as.matrix(dmt$edges[, .(from_pt, to_pt)]), directed=FALSE))
     diag(adj) = 1
-    adj = adj / colSums(adj)  # normalize
+    adj = adj / Matrix::colSums(adj)  # normalize
 
     embeddings = dmt$udv_cells$embeddings
     for (i in seq_len(smooth_emb)) {
