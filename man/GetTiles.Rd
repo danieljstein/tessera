@@ -13,7 +13,10 @@ GetTiles(...)
     \item{\code{meta_vars_include}}{Names of columns in meta_data to include in \code{dmt$pts}.}
     \item{\code{group.by}}{Name of column in \code{meta_data} that provides the group IDs. Tessera tiles are
 constructed separately for each group (which could be separate experimental samples or FOVs).}
-    \item{\code{npcs}}{Number of PCs to compute for input to segmentation.}
+    \item{\code{npcs}}{Number of PCs to compute for input to segmentation.
+Ignored if \code{embeddings} are provided directly.}
+    \item{\code{smooth_emb}}{Number of smoothing iterations to perform on the cell embeddings
+prior to gradient computation.}
     \item{\code{prune_thresh_quantile}}{Floating point value between 0 and 1, inclusive.
 Quantile of edge length above which edges are pruned. Defaults to 0.95.}
     \item{\code{prune_min_cells}}{Minimum number of cells required for a connected

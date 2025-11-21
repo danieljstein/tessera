@@ -79,3 +79,32 @@ do_pca = function(counts, npcs) {
     row.names(pres$u) = row.names(Z)
     return(list(loadings = pres$u, embeddings = V))
 }
+
+#' Smooth embeddings along edges
+#' 
+#' @param dmt A DMT object.
+#' @param smooth_emb Number of smoothing iterations to perform.
+#' 
+#' @returns The input DMT object with smoothed embeddings stored in
+#'   `dmt$udv_cells$embeddings`.
+#' 
+#' @export
+smooth_embedding = function(
+    dmt,
+    smooth_emb = 0
+) {
+
+    adj = as.matrix(igraph::from_edgelist()$fun(as.matrix(dmt$edges[, .(from_pt, to_pt)]), directed=FALSE))
+    diag(adj) = 1
+    adj = adj / colSums(adj)  # normalize
+
+    embeddings = dmt$udv_cells$embeddings
+    for (i in seq_len(smooth_emb)) {
+        embeddings = adj %*% embeddings
+    }
+    embeddings = as.matrix(embeddings)
+    rownames(embeddings) = rownames(dmt$udv_cells$embeddings)
+    dmt$udv_cells$embeddings = embeddings
+
+    return(dmt)
+}

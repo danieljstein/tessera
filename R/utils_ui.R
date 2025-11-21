@@ -270,6 +270,9 @@ GetTiles.Seurat = function(
 #' @param group.by Name of column in `meta_data` that provides the group IDs. Tessera tiles are
 #'   constructed separately for each group (which could be separate experimental samples or FOVs).
 #' @param npcs Number of PCs to compute for input to segmentation.
+#'   Ignored if `embeddings` are provided directly.
+#' @param smooth_emb Number of smoothing iterations to perform on the cell embeddings
+#'   prior to gradient computation.
 #' @param prune_thresh_quantile Floating point value between 0 and 1, inclusive.
 #'   Quantile of edge length above which edges are pruned. Defaults to 0.95.
 #' @param prune_min_cells Minimum number of cells required for a connected
@@ -416,6 +419,7 @@ GetTiles.default = function(
 
     ###### STEP 0 ######
     npcs = 10,
+    smooth_emb = 0,
 
     ## Graph pruning
     prune_thresh_quantile = 0.95,
@@ -504,6 +508,9 @@ GetTiles.default = function(
                 loadings = loadings,
                 embeddings = embeddings[idx,][as.integer(dmt$pts$ORIG_ID),]
             )
+        }
+        if (smooth_emb > 0) {
+            dmt = smooth_embedding(dmt, smooth_emb=smooth_emb)
         }
 
         ## STEP 1: GRADIENTS

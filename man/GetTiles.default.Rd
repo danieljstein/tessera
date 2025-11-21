@@ -14,6 +14,7 @@
   meta_vars_include = NULL,
   group.by = NULL,
   npcs = 10,
+  smooth_emb = 0,
   prune_thresh_quantile = 0.95,
   prune_min_cells = 10,
   prune_thresh = NA,
@@ -49,7 +50,11 @@ If missing, cell embeddings are calculated using PCA. If provided, the \code{npc
 \item{group.by}{Name of column in \code{meta_data} that provides the group IDs. Tessera tiles are
 constructed separately for each group (which could be separate experimental samples or FOVs).}
 
-\item{npcs}{Number of PCs to compute for input to segmentation.}
+\item{npcs}{Number of PCs to compute for input to segmentation.
+Ignored if \code{embeddings} are provided directly.}
+
+\item{smooth_emb}{Number of smoothing iterations to perform on the cell embeddings
+prior to gradient computation.}
 
 \item{prune_thresh_quantile}{Floating point value between 0 and 1, inclusive.
 Quantile of edge length above which edges are pruned. Defaults to 0.95.}
