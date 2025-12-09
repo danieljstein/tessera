@@ -272,7 +272,8 @@ GetTiles.Seurat = function(
 #' @param npcs Number of PCs to compute for input to segmentation.
 #'   Ignored if `embeddings` are provided directly.
 #' @param smooth_emb Number of smoothing iterations to perform on the cell embeddings
-#'   prior to gradient computation.
+#'   prior to gradient computation. If a vector, then embeddings after each specified
+#'   iteration are concatenated. If `0` is included, then the original embeddings are also included.
 #' @param prune_thresh_quantile Floating point value between 0 and 1, inclusive.
 #'   Quantile of edge length above which edges are pruned. Defaults to 0.95.
 #' @param prune_min_cells Minimum number of cells required for a connected
@@ -509,7 +510,7 @@ GetTiles.default = function(
                 embeddings = embeddings[idx,][as.integer(dmt$pts$ORIG_ID),]
             )
         }
-        if (smooth_emb > 0) {
+        if (any(smooth_emb > 0)) {
             dmt = smooth_embedding(dmt, smooth_emb=smooth_emb)
         }
 

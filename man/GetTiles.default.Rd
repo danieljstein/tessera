@@ -54,7 +54,8 @@ constructed separately for each group (which could be separate experimental samp
 Ignored if \code{embeddings} are provided directly.}
 
 \item{smooth_emb}{Number of smoothing iterations to perform on the cell embeddings
-prior to gradient computation.}
+prior to gradient computation. If a vector, then embeddings after each specified
+iteration are concatenated. If \code{0} is included, then the original embeddings are also included.}
 
 \item{prune_thresh_quantile}{Floating point value between 0 and 1, inclusive.
 Quantile of edge length above which edges are pruned. Defaults to 0.95.}
