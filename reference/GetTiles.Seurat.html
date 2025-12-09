@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tessera</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -118,7 +118,8 @@ Ignored if <code>embeddings</code> are provided directly.</p></dd>
 
     <dt><code>smooth_emb</code></dt>
 <dd><p>Number of smoothing iterations to perform on the cell embeddings
-prior to gradient computation.</p></dd>
+prior to gradient computation. If a vector, then embeddings after each specified
+iteration are concatenated. If <code>0</code> is included, then the original embeddings are also included.</p></dd>
 
     <dt><code>prune_thresh_quantile</code></dt>
 <dd><p>Floating point value between 0 and 1, inclusive.

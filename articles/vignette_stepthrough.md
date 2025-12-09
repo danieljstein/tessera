@@ -470,8 +470,8 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] patchwork_1.3.2   viridis_0.6.5     viridisLite_0.4.2 ggthemes_5.1.0   
-#> [5] ggplot2_4.0.1     tessera_0.1.8     Rcpp_1.1.0        data.table_1.17.8
+#> [1] patchwork_1.3.2   viridis_0.6.5     viridisLite_0.4.2 ggthemes_5.2.0   
+#> [5] ggplot2_4.0.1     tessera_0.1.9     Rcpp_1.1.0        data.table_1.17.8
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] gtable_0.3.6       xfun_0.54          bslib_0.9.0        htmlwidgets_1.6.4 
@@ -479,12 +479,12 @@ sessionInfo()
 #>  [9] parallel_4.5.2     tibble_3.3.0       proxy_0.4-27       pkgconfig_2.0.3   
 #> [13] Matrix_1.7-4       KernSmooth_2.23-26 RColorBrewer_1.1-3 S7_0.2.1          
 #> [17] desc_1.4.3         lifecycle_1.0.4    compiler_4.5.2     farver_2.1.2      
-#> [21] stringr_1.6.0      textshaping_1.0.4  codetools_0.2-20   htmltools_0.5.8.1 
-#> [25] class_7.3-23       sass_0.4.10        yaml_2.3.10        pkgdown_2.2.0     
+#> [21] stringr_1.6.0      textshaping_1.0.4  codetools_0.2-20   htmltools_0.5.9   
+#> [25] class_7.3-23       sass_0.4.10        yaml_2.3.11        pkgdown_2.2.0     
 #> [29] pillar_1.11.1      furrr_0.3.1        jquerylib_0.1.4    classInt_0.4-11   
 #> [33] cachem_1.1.0       abind_1.4-8        mclust_6.1.2       RSpectra_0.16-2   
 #> [37] parallelly_1.45.1  tidyselect_1.2.1   digest_0.6.39      stringi_1.8.7     
-#> [41] future_1.68.0      sf_1.0-22          dplyr_1.1.4        purrr_1.2.0       
+#> [41] future_1.68.0      sf_1.0-23          dplyr_1.1.4        purrr_1.2.0       
 #> [45] listenv_0.10.0     labeling_0.4.3     magic_1.6-1        fastmap_1.2.0     
 #> [49] grid_4.5.2         cli_3.6.5          magrittr_2.0.4     e1071_1.7-16      
 #> [53] withr_3.0.2        scales_1.4.0       rmarkdown_2.30     globals_0.18.0    

@@ -93,7 +93,9 @@ GetTiles(
   `smooth_emb`
 
   :   Number of smoothing iterations to perform on the cell embeddings
-      prior to gradient computation.
+      prior to gradient computation. If a vector, then embeddings after
+      each specified iteration are concatenated. If `0` is included,
+      then the original embeddings are also included.
 
   `prune_thresh_quantile`
 
