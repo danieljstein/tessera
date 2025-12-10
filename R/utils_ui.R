@@ -158,6 +158,10 @@ GetTiles.Seurat = function(
             stopifnot(all(rownames(new_counts) == rownames(tile.counts)))
 
             new_tiles_embeddings = emb[isolated_cells,]
+            new_tiles_embeddings = do.call(cbind, replicate(  # concatenate embeddings to match tiles
+                ncol(tile.embeddings) / ncol(new_tiles_embeddings),
+                new_tiles_embeddings, simplify = FALSE
+            ))
             colnames(new_tiles_embeddings) = colnames(tile.embeddings)
             rownames(new_tiles_embeddings) = new_tiles_metadata$id
 
