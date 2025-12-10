@@ -54,6 +54,7 @@ GetTiles.Seurat = function(
     obj,
     spatial,
     embeddings = NULL,
+    dims.use = NULL,
     assay = NULL,
     group.by = NULL,
     raw_results = FALSE,
@@ -76,6 +77,11 @@ GetTiles.Seurat = function(
     if (!is.null(embeddings)) {
         emb <- Seurat::Embeddings(obj, reduction = embeddings)
         load <- Seurat::Loadings(obj, reduction = embeddings)
+        
+        if (is.null(dims.use)) {
+            dims.use = seq_len(ncol(emb))
+        }
+        emb = emb[,dims.use,drop=FALSE]
     } else {
         emb <- NULL
         load <- NULL
