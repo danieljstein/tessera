@@ -10,6 +10,7 @@ GetTiles(
   obj,
   spatial,
   embeddings = NULL,
+  dims.use = NULL,
   assay = NULL,
   group.by = NULL,
   raw_results = FALSE,
