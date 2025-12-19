@@ -119,5 +119,15 @@ smooth_embedding = function(
     colnames(embeddings) = paste0('PC_', 1:ncol(embeddings))
     dmt$udv_cells$embeddings = embeddings
 
+    if (!is.null(dmt$udv_cells$loadings)) {
+        loadings = dmt$udv_cells$loadings
+
+        loadings = do.call(cbind, replicate(length(smooth_emb), loadings, simplify=FALSE))
+        rownames(loadings) = rownames(dmt$udv_cells$loadings)
+        colnames(loadings) = paste0('PC_', 1:ncol(embeddings))
+
+        dmt$udv_cells$loadings = loadings
+    }
+
     return(dmt)
 }
