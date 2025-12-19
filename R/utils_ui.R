@@ -429,12 +429,12 @@ GetTiles.default = function(
     group.by = NULL,
 
     ###### STEP 0 ######
-    npcs = 10,
-    smooth_emb = 0,
+    npcs = 25,
+    smooth_emb = c(0, 1),
 
     ## Graph pruning
-    prune_thresh_quantile = 0.95,
-    prune_min_cells = 10,
+    prune_thresh_quantile = 0.99,
+    prune_min_cells = 1,
     prune_thresh = NA,
 
     ###### STEP 1: GRADIENTS ######
