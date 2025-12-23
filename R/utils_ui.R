@@ -82,6 +82,7 @@ GetTiles.Seurat = function(
             dims.use = seq_len(ncol(emb))
         }
         emb = emb[,dims.use,drop=FALSE]
+        load = load[,dims.use,drop=FALSE]
     } else {
         emb <- NULL
         load <- NULL
