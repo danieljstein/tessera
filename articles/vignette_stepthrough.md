@@ -488,8 +488,8 @@ sessionInfo()
 #> [45] listenv_0.10.0     labeling_0.4.3     magic_1.6-1        fastmap_1.2.0     
 #> [49] grid_4.5.2         cli_3.6.5          magrittr_2.0.4     e1071_1.7-17      
 #> [53] withr_3.0.2        scales_1.4.0       rmarkdown_2.30     globals_0.18.0    
-#> [57] igraph_2.2.1       gridExtra_2.3      ragg_1.5.0         evaluate_1.0.5    
-#> [61] knitr_1.50         geometry_0.5.2     rlang_1.1.6        glue_1.8.0        
-#> [65] DBI_1.2.3          jsonlite_2.0.0     R6_2.6.1           systemfonts_1.3.1 
-#> [69] fs_1.6.6           units_1.0-0
+#> [57] igraph_2.2.1       otel_0.2.0         gridExtra_2.3      ragg_1.5.0        
+#> [61] evaluate_1.0.5     knitr_1.51         geometry_0.5.2     rlang_1.1.6       
+#> [65] glue_1.8.0         DBI_1.2.3          jsonlite_2.0.0     R6_2.6.1          
+#> [69] systemfonts_1.3.1  fs_1.6.6           units_1.0-0
 ```

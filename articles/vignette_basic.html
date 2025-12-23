@@ -105,7 +105,7 @@
 <span>    <span class="fu"><a href="http://jrnold.github.io/ggthemes/reference/scale_color_tableau.html" class="external-link">scale_color_tableau</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">coord_sf</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="cn">NULL</span></span></code></pre></div>
-<p><img src="vignette_basic_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="vignette_basic_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>Some coarse grained cell types are predefined here, to help interpret
 the tiles we get below.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -151,7 +151,7 @@ returns in two structures:</p>
 <span>        <span class="cn">NULL</span> </span>
 <span><span class="op">}</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>    <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/reduce.html" class="external-link">reduce</a></span><span class="op">(</span><span class="va">`|`</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vignette_basic_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="vignette_basic_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="cluster-and-label-tiles">Cluster and label tiles<a class="anchor" aria-label="anchor" href="#cluster-and-label-tiles"></a>
@@ -193,7 +193,7 @@ returns in two structures:</p>
 <span></span>
 <span><span class="fu">fig.size</span><span class="op">(</span><span class="fl">6</span>, <span class="fl">12</span><span class="op">)</span></span>
 <span><span class="op">(</span><span class="va">p1</span> <span class="op">|</span> <span class="va">p2</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html" class="external-link">plot_layout</a></span><span class="op">(</span>widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vignette_basic_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="vignette_basic_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="transfer-agg-information-to-cells">Transfer agg information to cells<a class="anchor" aria-label="anchor" href="#transfer-agg-information-to-cells"></a>
@@ -219,7 +219,7 @@ returns in two structures:</p>
 <span>    <span class="cn">NULL</span></span>
 <span><span class="fu">fig.size</span><span class="op">(</span><span class="fl">8</span>, <span class="fl">20</span><span class="op">)</span></span>
 <span><span class="va">p1</span> <span class="op">|</span> <span class="va">p2</span></span></code></pre></div>
-<p><img src="vignette_basic_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="vignette_basic_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>Let’s look at the composition of the spatial clusters.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">fig.size</span><span class="op">(</span><span class="fl">8</span>, <span class="fl">10</span><span class="op">)</span></span>
@@ -233,7 +233,7 @@ returns in two structures:</p>
 <span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">20</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">'% of spatial cluster'</span>, fill <span class="op">=</span> <span class="st">'cell type'</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>        <span class="cn">NULL</span></span></code></pre></div>
-<p><img src="vignette_basic_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="vignette_basic_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>We can also query genes in space as we usually do in cells.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">feature</span> <span class="op">=</span> <span class="st">'MKI67'</span> <span class="co">## dividing cells </span></span>
@@ -246,7 +246,7 @@ returns in two structures:</p>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">coord_sf</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="cn">NULL</span></span></code></pre></div>
-<p><img src="vignette_basic_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="vignette_basic_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
@@ -304,13 +304,13 @@ returns in two structures:</p>
 <span><span class="co">#&gt;  [64] promises_1.5.0         grid_4.5.2             sf_1.0-23             </span></span>
 <span><span class="co">#&gt;  [67] Rtsne_0.17             cluster_2.1.8.1        reshape2_1.4.5        </span></span>
 <span><span class="co">#&gt;  [70] generics_0.1.4         gtable_0.3.6           spatstat.data_3.1-9   </span></span>
-<span><span class="co">#&gt;  [73] class_7.3-23           tidyr_1.3.1            spatstat.geom_3.6-1   </span></span>
+<span><span class="co">#&gt;  [73] class_7.3-23           tidyr_1.3.2            spatstat.geom_3.6-1   </span></span>
 <span><span class="co">#&gt;  [76] RcppAnnoy_0.0.22       ggrepel_0.9.6          RANN_2.6.2            </span></span>
 <span><span class="co">#&gt;  [79] pillar_1.11.1          stringr_1.6.0          spam_2.11-1           </span></span>
 <span><span class="co">#&gt;  [82] RcppHNSW_0.6.0         later_1.4.4            splines_4.5.2         </span></span>
 <span><span class="co">#&gt;  [85] dplyr_1.1.4            lattice_0.22-7         survival_3.8-3        </span></span>
 <span><span class="co">#&gt;  [88] deldir_2.0-4           tidyselect_1.2.1       miniUI_0.1.2          </span></span>
-<span><span class="co">#&gt;  [91] pbapply_1.7-4          knitr_1.50             gridExtra_2.3         </span></span>
+<span><span class="co">#&gt;  [91] pbapply_1.7-4          knitr_1.51             gridExtra_2.3         </span></span>
 <span><span class="co">#&gt;  [94] scattermore_1.2        xfun_0.55              matrixStats_1.5.0     </span></span>
 <span><span class="co">#&gt;  [97] stringi_1.8.7          lazyeval_0.2.2         yaml_2.3.12           </span></span>
 <span><span class="co">#&gt; [100] evaluate_1.0.5         codetools_0.2-20       tibble_3.3.0          </span></span>
