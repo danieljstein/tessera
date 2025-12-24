@@ -241,7 +241,7 @@ sessionInfo()
 #> other attached packages:
 #>  [1] purrr_1.2.0        future_1.68.0      patchwork_1.3.2    viridis_0.6.5     
 #>  [5] viridisLite_0.4.2  ggthemes_5.2.0     ggplot2_4.0.1      Seurat_5.4.0      
-#>  [9] SeuratObject_5.3.0 sp_2.2-0           tessera_0.1.9      Rcpp_1.1.0        
+#>  [9] SeuratObject_5.3.0 sp_2.2-0           tessera_0.1.10     Rcpp_1.1.0        
 #> [13] data.table_1.17.8 
 #> 
 #> loaded via a namespace (and not attached):

@@ -471,7 +471,7 @@ sessionInfo()
 #> 
 #> other attached packages:
 #> [1] patchwork_1.3.2   viridis_0.6.5     viridisLite_0.4.2 ggthemes_5.2.0   
-#> [5] ggplot2_4.0.1     tessera_0.1.9     Rcpp_1.1.0        data.table_1.17.8
+#> [5] ggplot2_4.0.1     tessera_0.1.10    Rcpp_1.1.0        data.table_1.17.8
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] gtable_0.3.6       xfun_0.55          bslib_0.9.0        htmlwidgets_1.6.4 
