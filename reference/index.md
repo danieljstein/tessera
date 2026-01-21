@@ -11,6 +11,9 @@
   constructing Tessera tiles separately on cells from each group.
 - [`FindSubClusterCustom()`](https://korsunskylab.github.io/tessera/reference/FindSubClusterCustom.md)
   : Find sub-clusters within a specific cluster of a Seurat object
+- [`FindTileSubCluster()`](https://korsunskylab.github.io/tessera/reference/FindTileSubCluster.md)
+  : Find sub-clusters within a specific cluster of a Seurat object using
+  matching tile and cell data
 - [`GetTiles()`](https://korsunskylab.github.io/tessera/reference/GetTiles.md)
   : Generic function that runs the Tessera algorithm on single-cell
   spatial data
@@ -21,6 +24,9 @@
   cells
 - [`MakeSubClusterObj()`](https://korsunskylab.github.io/tessera/reference/MakeSubClusterObj.md)
   : Create a Seurat object for sub-clustering a specific cluster
+- [`MakeTileSubClusterObj()`](https://korsunskylab.github.io/tessera/reference/MakeTileSubClusterObj.md)
+  : Create a Seurat object for sub-clustering a specific cluster from
+  matching tile and cell data
 - [`MergeClusters()`](https://korsunskylab.github.io/tessera/reference/MergeClusters.md)
   : Merge clusters in a Seurat object
 - [`RunUMAPCustom()`](https://korsunskylab.github.io/tessera/reference/RunUMAPCustom.md)

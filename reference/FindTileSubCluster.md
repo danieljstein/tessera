@@ -1,20 +1,24 @@
-# Find sub-clusters within a specific cluster of a Seurat object
+# Find sub-clusters within a specific cluster of a Seurat object using matching tile and cell data
 
-Find sub-clusters within a specific cluster of a Seurat object
+Find sub-clusters within a specific cluster of a Seurat object using
+matching tile and cell data
 
 ## Usage
 
 ``` r
-FindSubClusterCustom(
+FindTileSubCluster(
   obj,
   cluster,
+  cell_obj = NULL,
   clusters.name = "seurat_clusters",
+  tile_assay = NULL,
+  cell_assay = NULL,
   sub.clusters.name = NULL,
-  resolution = 0.5,
-  algorithm = 1,
-  npcs = 30,
+  resolution = 0.2,
+  algorithm = 4,
+  npcs = 20,
   method = "igraph",
-  n_neighbors = 15,
+  n_neighbors = 25,
   fast_sgd = TRUE,
   scale.factor = NULL,
   use.existing.embeddings = NULL,
@@ -29,15 +33,30 @@ FindSubClusterCustom(
 
 - obj:
 
-  A Seurat object.
+  A Seurat object containing tile-level data.
 
 - cluster:
 
   The cluster label to sub-cluster.
 
+- cell_obj:
+
+  (Opional) A Seurat object containing cell-level data with a `tile_id`
+  metadata column. If NULL, sub-clustering is performed using only `obj`
+  without recomputing tile embeddings from cell data.
+
 - clusters.name:
 
   Name of the metadata column in `obj` containing the cluster labels.
+
+- tile_assay:
+
+  Assay in `obj` to use for sub-clustering. If NULL, use DefaultAssay.
+
+- cell_assay:
+
+  Assay in `cell_obj` to use for computing cell embeddings. If NULL, use
+  DefaultAssay.
 
 - sub.clusters.name:
 
@@ -79,7 +98,7 @@ FindSubClusterCustom(
 - use.existing.embeddings:
 
   Name of existing dimensional reduction in `obj` to use for
-  sub-clustering. If NULL, compute PCA on the subsetted data.
+  sub-clustering. If NULL, compute PCA on the subsetted cell-level data.
 
 - meta.vars.include:
 
