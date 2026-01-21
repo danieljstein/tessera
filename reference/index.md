@@ -6,6 +6,8 @@
   : Construct tile adjacency matrix from consolidated GetTiles output.
 - [`AddSubClusterLabels()`](https://korsunskylab.github.io/tessera/reference/AddSubClusterLabels.md)
   : Add sub-cluster labels to a Seurat object
+- [`AddTileMetadata()`](https://korsunskylab.github.io/tessera/reference/AddTileMetadata.md)
+  : Add tile-level metadata to a matching cell-level Seurat object
 - [`ConsolidateResults()`](https://korsunskylab.github.io/tessera/reference/ConsolidateResults.md)
   : Consolidate Tessera results from multiple samples (groups) after
   constructing Tessera tiles separately on cells from each group.
