@@ -489,7 +489,7 @@ group_matrix = function(groups) {
     not_na_idx = which(!is.na(groups_as_int))
     groups_as_int = groups_as_int[not_na_idx]
 
-    out = sparseMatrix(
+    out = Matrix::sparseMatrix(
         i = groups_as_int,
         j = not_na_idx,
         x = 1,
@@ -520,7 +520,7 @@ aggregate_embeddings = function(embeddings, groups, mean = TRUE, as_matrix = TRU
     
     group_by_cell = group_matrix(groups)
     if (mean) {
-        group_counts = rowSums(group_by_cell)
+        group_counts = Matrix::rowSums(group_by_cell)
         if (any(group_counts == 0)) {
             message('WARNING: Some groups have no members, will have NA embeddings')
         }
