@@ -472,3 +472,65 @@ FindTileSubCluster = function(
         return(obj)
     }
 }
+
+#' @param labels A factor of length num_cells (can be named)
+#'   assigning each cell to some group (tile ID, cell type, etc.).
+#'   Cells that have NA value for the group are not assigned to any group.
+#' 
+#' @returns A `num_groups` x `num_cells` sparse matrix with one-hot assignment
+#'   of each cell to a group (unassigned if NA). Rownames are the factor
+#'   levels (group names), and colnames are the factor names (cell names).
+#'
+group_matrix = function(groups) {
+    stopifnot(is.factor(groups))
+
+    groups_as_int = as.integer(groups)
+    not_na_idx = which(!is.na(groups_as_int))
+    groups_as_int = groups_as_int[not_na_idx]
+
+    out = sparseMatrix(
+        i = groups_as_int,
+        j = not_na_idx,
+        x = 1,
+        dims = c(nlevels(groups), length(groups)),
+        dimnames = list(levels(groups), names(groups))
+    )
+    return(out)
+}
+
+#' @param embeddings A `num_cells` x `embedding_dim` (or 
+#'   `embeddings_dim` x `num_cells` if transposed is TRUE) matrix
+#'   of cell embeddings (e.g. transcript counts, PCs, harmonized PCs,
+#'   scVI latent dimensions, etc.)
+#' @param groups A factor of length num_cells (can be named)
+#'   assigning each cell to some category (tile ID, cell type, etc.)
+#' @param mean If `TRUE`, then aggregated by computing the mean
+#'   of each group. Otherwise, computes the sum.
+#' @param as_matrix If `TRUE`, then casts output as dense matrix
+#' @param transposed If TRUE, then `embeddings` input and output
+#'   have dimensions `embeddings_dim` x `num_cells` and
+#'   `embedding_dim` x `num_groups`
+#'
+#' @returns A `num_groups` x `embedding_dim` matrix (or 
+#'   `embedding_dim` x `num_groups` if tranposed is TRUE)
+aggregate_embeddings = function(embeddings, groups, mean = TRUE, as_matrix = TRUE, transposed = FALSE) {
+    
+    group_by_cell = group_matrix(groups)
+    if (mean) {
+        group_counts = rowSums(group_by_cell)
+        if (any(group_counts == 0)) {
+            message('WARNING: Some groups have no members, will have NA embeddings')
+        }
+        # group_counts[group_counts == 0] = 1  # avoid divide by zero
+        group_by_cell = group_by_cell / group_counts
+    }
+    if (transposed) {
+        aggregated = embeddings %*% t(group_by_cell)
+    } else {
+        aggregated = group_by_cell %*% embeddings    # sum of embeddings
+    }
+    if (as_matrix) {
+        aggregated = as.matrix(aggregated)
+    }
+    return(aggregated)
+}
