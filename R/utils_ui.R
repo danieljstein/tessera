@@ -443,7 +443,7 @@ GetTiles.default = function(
     smooth_distance = c('none', 'euclidean', 'projected', 'constant')[3],
     smooth_similarity = c('none', 'euclidean', 'projected', 'constant')[3],
     smooth_iter = 1,
-    on_edges = FALSE,
+    on_edges = TRUE,
 
     ###### STEP 2: DMT ######
 
