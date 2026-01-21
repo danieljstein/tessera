@@ -164,18 +164,23 @@ MakeSubClusterObj = function(
     clusters.name = "seurat_clusters", npcs=30,
     fast_sgd = FALSE,
     n_neighbors = 15,
+    assay = NULL,
     scale.factor = NULL,
     use.existing.embeddings = NULL,
     meta.vars.include = NULL,
     harmony.group.by.vars = NULL,
     early_stop = TRUE
 ) {
+    if (is.null(assay)) {
+        assay = DefaultAssay(obj)
+    }
+    
     subset_idx = which(obj@meta.data[[clusters.name]] == cluster)
     meta.vars.include = unique(c(meta.vars.include, harmony.group.by.vars))
     # counts = obj[["RNA"]]$counts[,subset_idx]
     # colnames(counts) = NULL
     obj_sub = CreateSeuratObject(
-        counts = obj[["RNA"]]$counts[,subset_idx],
+        counts = obj[[assay]]$counts[,subset_idx],
         # counts = counts,
         meta.data = obj@meta.data[subset_idx, meta.vars.include]
     )
@@ -210,6 +215,85 @@ MakeSubClusterObj = function(
     obj_sub = RunUMAPCustom(obj_sub, reduction = reduction,
                             n_neighbors = n_neighbors, fast_sgd = fast_sgd)
     return(obj_sub)
+}
+
+MakeTileSubClusterObj = function(
+    tile_obj, cluster, cell_obj,
+    clusters.name = "seurat_clusters", npcs=30,
+    tile_assay = NULL, cell_assay = NULL,
+    fast_sgd = FALSE,
+    n_neighbors = 15,
+    scale.factor = NULL,
+    use.existing.embeddings = NULL,
+    meta.vars.include = NULL,
+    harmony.group.by.vars = NULL,
+    early_stop = TRUE
+) {
+    stopifnot(all(levels(cell_obj$tile_id) == colnames(tile_obj)))
+    stopifnot('tile_id' %in% colnames(cell_obj@meta.data))
+    
+    if (is.null(tile_assay)) {
+        tile_assay = DefaultAssay(tile_obj)
+    }
+    
+    subset_idx = which(tile_obj@meta.data[[clusters.name]] == cluster)
+    meta.vars.include = unique(c(meta.vars.include, harmony.group.by.vars))
+    tile_obj_sub = CreateSeuratObject(
+        counts = tile_obj[[tile_assay]]$counts[,subset_idx],
+        meta.data = tile_obj@meta.data[subset_idx, meta.vars.include, drop=FALSE]
+    )
+    
+    if (is.null(use.existing.embeddings)) {
+        if (is.null(cell_assay)) {
+            cell_assay = DefaultAssay(cell_obj)
+        }
+        
+        cell_subset_idx = which(cell_obj$tile_id %in% colnames(tile_obj_sub))
+        meta.vars.include = unique(c(meta.vars.include, harmony.group.by.vars, 'tile_id'))
+        
+        cell_obj_sub = CreateSeuratObject(
+            counts = cell_obj[[cell_assay]]$counts[,cell_subset_idx],
+            meta.data = cell_obj@meta.data[cell_subset_idx, meta.vars.include, drop=FALSE]
+        )
+        
+        if (is.null(scale.factor)) {
+            scale.factor = median(cell_obj_sub$nCount_RNA)
+        }
+        cell_obj_sub <- NormalizeData(object = cell_obj_sub, scale.factor = scale.factor)
+        cell_obj_sub <- FindVariableFeatures(object = cell_obj_sub)
+        cell_obj_sub <- ScaleData(object = cell_obj_sub)  # might get an error in this line if the cells don't have good names
+        cell_obj_sub <- RunPCA(object = cell_obj_sub, npcs = npcs)
+        reduction = "pca"
+    
+        if (!is.null(harmony.group.by.vars)) {
+            cell_obj_sub = harmony::RunHarmony(
+                cell_obj_sub, harmony.group.by.vars,
+                early_stop = early_stop,
+                reduction.use = reduction,
+                reduction.save = paste0(reduction, '_harmony'))
+            reduction = paste0(reduction, '_harmony')
+        }
+        
+        tile_obj_sub[[reduction]] <- CreateDimReducObject(
+            embeddings = aggregate_embeddings(Embeddings(cell_obj_sub, reduction),
+                                              droplevels(cell_obj_sub$tile_id))[colnames(tile_obj_sub),],
+            loadings = Loadings(cell_obj_sub, reduction),
+            key = reduction
+        )
+    } else {
+        tile_obj_sub[[use.existing.embeddings]] <- CreateDimReducObject(
+            embeddings = Embeddings(tile_obj, use.existing.embeddings)[subset_idx,],
+            loadings = Loadings(tile_obj, use.existing.embeddings),
+            key = use.existing.embeddings
+        )
+        reduction = use.existing.embeddings
+    }
+    
+    tile_obj_sub = RunUMAPCustom(
+        tile_obj_sub, reduction = reduction,
+        n_neighbors = n_neighbors, fast_sgd = fast_sgd
+    )
+    return(tile_obj_sub)
 }
 
 #' Find sub-clusters within a specific cluster of a Seurat object
@@ -259,6 +343,68 @@ FindSubClusterCustom = function(
                                 harmony.group.by.vars = harmony.group.by.vars,
                                 early_stop = early_stop,
                                 fast_sgd = fast_sgd)
+    if (algorithm == 4) {
+        suppressWarnings({    # the igraph conversion spits out a lot of warnings, which is slow if printed
+            obj_sub <- FindClusters(object = obj_sub, resolution = resolution, algorithm = algorithm,
+                            method = method, graph.name = 'RNA_fgraph')
+        })
+    } else {
+        obj_sub <- FindClusters(object = obj_sub, resolution = resolution, algorithm = algorithm,
+                            method = method, graph.name = 'RNA_fgraph')
+    }
+
+    obj = AddSubClusterLabels(obj, obj_sub, cluster, clusters.name = clusters.name, sub.clusters.name = sub.clusters.name)
+
+    if (return_obj_sub) {
+        list('obj' = obj, 'obj_sub' = obj_sub)
+    } else {
+        return(obj)
+    }
+}
+
+FindTileSubCluster = function(
+    obj, cluster, cell_obj = NULL,
+    clusters.name = "seurat_clusters",
+    tile_assay = NULL, cell_assay = NULL,
+    sub.clusters.name = NULL,
+    resolution = 0.2, algorithm = 4, npcs=20,
+    method = 'igraph',
+    n_neighbors = 25,
+    fast_sgd = TRUE,
+    scale.factor = NULL,
+    use.existing.embeddings = NULL,
+    meta.vars.include = NULL,
+    harmony.group.by.vars = NULL,
+    early_stop = TRUE,
+    return_obj_sub = FALSE
+) {
+    if (is.null(cell_obj)) {
+        obj_sub = MakeSubClusterObj(
+            obj, cluster, clusters.name = clusters.name,
+            npcs = npcs, n_neighbors = n_neighbors,
+            assay = tile_assay,
+            scale.factor = scale.factor,
+            use.existing.embeddings = use.existing.embeddings,
+            meta.vars.include = meta.vars.include,
+            harmony.group.by.vars = harmony.group.by.vars,
+            early_stop = early_stop,
+            fast_sgd = fast_sgd
+        )
+    } else {
+        obj_sub = MakeTileSubClusterObj(
+            obj, cluster, cell_obj,
+            clusters.name = clusters.name,
+            tile_assay = tile_assay, cell_assay = cell_assay,
+            npcs = npcs, n_neighbors = n_neighbors,
+            scale.factor = scale.factor,
+            use.existing.embeddings = use.existing.embeddings,
+            meta.vars.include = meta.vars.include,
+            harmony.group.by.vars = harmony.group.by.vars,
+            early_stop = early_stop,
+            fast_sgd = fast_sgd
+        )
+    }
+    
     if (algorithm == 4) {
         suppressWarnings({    # the igraph conversion spits out a lot of warnings, which is slow if printed
             obj_sub <- FindClusters(object = obj_sub, resolution = resolution, algorithm = algorithm,
