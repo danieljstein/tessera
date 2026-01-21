@@ -10,6 +10,7 @@ GetTiles(
   obj,
   spatial,
   embeddings = NULL,
+  loadings = NULL,
   dims.use = NULL,
   assay = NULL,
   group.by = NULL,
@@ -41,6 +42,11 @@ GetTiles(
   embeddings across all latent dimensions). If missing, cell embeddings
   are calculated using PCA. If provided, the `npcs` parameter is
   ignored.
+
+- loadings:
+
+  (Optional) Name of dimensional reduction where pre-computed gene
+  loadings are stored.
 
 - assay:
 

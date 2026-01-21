@@ -48,6 +48,7 @@
 <span>  <span class="va">obj</span>,</span>
 <span>  <span class="va">spatial</span>,</span>
 <span>  embeddings <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  loadings <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  dims.use <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  assay <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  group.by <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -77,6 +78,10 @@ single cell embeddings) stored as dimensional reductions.</p></dd>
 <dd><p>Name of dimensional reduction where pre-computed single-cell embeddings are stored
 (a <code>num_cells</code> x <code>num_dim</code> matrix of cell embeddings across all latent dimensions).
 If missing, cell embeddings are calculated using PCA. If provided, the <code>npcs</code> parameter is ignored.</p></dd>
+
+
+<dt id="arg-loadings">loadings<a class="anchor" aria-label="anchor" href="#arg-loadings"></a></dt>
+<dd><p>(Optional) Name of dimensional reduction where pre-computed gene loadings are stored.</p></dd>
 
 
 <dt id="arg-assay">assay<a class="anchor" aria-label="anchor" href="#arg-assay"></a></dt>
