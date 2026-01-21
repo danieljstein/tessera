@@ -481,6 +481,7 @@ FindTileSubCluster = function(
 #'   of each cell to a group (unassigned if NA). Rownames are the factor
 #'   levels (group names), and colnames are the factor names (cell names).
 #'
+#' @export
 group_matrix = function(groups) {
     stopifnot(is.factor(groups))
 
@@ -512,7 +513,9 @@ group_matrix = function(groups) {
 #'   `embedding_dim` x `num_groups`
 #'
 #' @returns A `num_groups` x `embedding_dim` matrix (or 
-#'   `embedding_dim` x `num_groups` if tranposed is TRUE)
+#'   `embedding_dim` x `num_groups` if tranposed is TRUE)'
+#' 
+#' @export
 aggregate_embeddings = function(embeddings, groups, mean = TRUE, as_matrix = TRUE, transposed = FALSE) {
     
     group_by_cell = group_matrix(groups)
@@ -533,4 +536,39 @@ aggregate_embeddings = function(embeddings, groups, mean = TRUE, as_matrix = TRU
         aggregated = as.matrix(aggregated)
     }
     return(aggregated)
+}
+
+#' Add tile-level metadata to a matching cell-level Seurat object
+#' 
+#' @param obj A Seurat object containing cell-level data with a `tile_id` metadata column.
+#' @param tile_obj A Seurat object containing tile-level data.
+#' @param ... Tidy expressions specifying which metadata columns from `tile_obj`
+#'   to add to `obj`. For example, `tile_size = npts`
+#' @param by A named character vector specifying how to join `obj` and `tile_obj`.
+#'   Defaults to `c('tile_id' = 'id')`, where `tile_id` is the metadata column
+#'   in `obj` and `id` is the metadata column in `tile_obj`.
+#'
+#' @returns The input Seurat object with additional tile-level metadata added to `@meta.data`.
+#'
+#' @export
+AddTileMetadata = function(
+    obj, tile_obj, ...,
+    by = c('tile_id' = 'id')
+) {
+    # capture expressions
+    exprs <- enquos(...)
+
+    if (length(exprs) == 0) {
+        stop("Please supply one or more tidy expressions, e.g. tile_size = npts")
+    }
+
+    obj@meta.data = cbind(
+        obj@meta.data,
+        obj@meta.data %>% select(tile_id) %>% left_join(
+            tile_obj@meta.data %>% select(id, !!!exprs),
+            by = by
+        ) %>% select(-tile_id)
+    )
+
+    return(obj)
 }
