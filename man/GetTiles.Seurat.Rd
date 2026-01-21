@@ -8,6 +8,7 @@
   obj,
   spatial,
   embeddings = NULL,
+  loadings = NULL,
   dims.use = NULL,
   assay = NULL,
   group.by = NULL,
@@ -28,6 +29,8 @@ single cell embeddings) stored as dimensional reductions.}
 \item{embeddings}{Name of dimensional reduction where pre-computed single-cell embeddings are stored
 (a \code{num_cells} x \code{num_dim} matrix of cell embeddings across all latent dimensions).
 If missing, cell embeddings are calculated using PCA. If provided, the \code{npcs} parameter is ignored.}
+
+\item{loadings}{(Optional) Name of dimensional reduction where pre-computed gene loadings are stored.}
 
 \item{assay}{Seurat assay to pull data for when using the cell counts. Defaults to the DefaultAssay.}
 

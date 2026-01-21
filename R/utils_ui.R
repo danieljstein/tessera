@@ -34,6 +34,7 @@ GetTiles = function(...) {
 #' @param embeddings Name of dimensional reduction where pre-computed single-cell embeddings are stored
 #'   (a `num_cells` x `num_dim` matrix of cell embeddings across all latent dimensions).
 #'   If missing, cell embeddings are calculated using PCA. If provided, the `npcs` parameter is ignored.
+#' @param loadings (Optional) Name of dimensional reduction where pre-computed gene loadings are stored.
 #' @param assay Seurat assay to pull data for when using the cell counts. Defaults to the DefaultAssay.
 #' @param group.by Name of column in `obj@meta.data` to use for grouping cells into separate samples.
 #' @param raw_results Whether to return the raw results from [GetTiles.default()].
@@ -54,6 +55,7 @@ GetTiles.Seurat = function(
     obj,
     spatial,
     embeddings = NULL,
+    loadings = NULL,
     dims.use = NULL,
     assay = NULL,
     group.by = NULL,
@@ -76,13 +78,18 @@ GetTiles.Seurat = function(
 
     if (!is.null(embeddings)) {
         emb <- Seurat::Embeddings(obj, reduction = embeddings)
-        load <- Seurat::Loadings(obj, reduction = embeddings)
         
         if (is.null(dims.use)) {
             dims.use = seq_len(ncol(emb))
         }
         emb = emb[,dims.use,drop=FALSE]
-        load = load[,dims.use,drop=FALSE]
+
+        if (!is.null(loadings)) {
+            load <- Seurat::Loadings(obj, reduction = loadings)
+            load = load[,dims.use,drop=FALSE]
+        } else {
+            load = NULL
+        }
     } else {
         emb <- NULL
         load <- NULL
