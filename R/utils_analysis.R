@@ -162,7 +162,7 @@ AddSubClusterLabels = function(
 MakeSubClusterObj = function(
     obj, cluster,
     clusters.name = "seurat_clusters", npcs=30,
-    fast_sgd = FALSE,
+    fast_sgd = TRUE,
     n_neighbors = 15,
     assay = NULL,
     scale.factor = NULL,
@@ -217,11 +217,32 @@ MakeSubClusterObj = function(
     return(obj_sub)
 }
 
+#' Create a Seurat object for sub-clustering a specific cluster from matching tile and cell data
+#' 
+#' @param tile_obj A Seurat object containing tile-level data.
+#' @param cluster The cluster label to sub-cluster.
+#' @param cell_obj A Seurat object containing cell-level data with a `tile_id` metadata column.
+#' @param clusters.name Name of the metadata column in `tile_obj` containing the cluster labels.
+#' @param npcs Number of principal components to use for sub-clustering.
+#' @param fast_sgd Whether to use fast SGD in UMAP.
+#' @param n_neighbors Number of neighbors to use in UMAP.
+#' @param tile_assay Assay in `tile_obj` to use for sub-clustering. If NULL, use DefaultAssay.
+#' @param cell_assay Assay in `cell_obj` to use for computing cell embeddings. If NULL, use DefaultAssay.
+#' @param scale.factor Scale factor for normalization. If NULL, use median nCount_RNA.
+#' @param use.existing.embeddings Name of existing dimensional reduction in `tile_obj`
+#'   to use for sub-clustering. If NULL, compute PCA on the subsetted cell-level data.
+#' @param meta.vars.include Metadata variables to include in the sub-clustered object.
+#' @param harmony.group.by.vars Metadata variables to use for Harmony integration.
+#' @param early_stop Whether to use early stopping in Harmony.
+#'
+#' @returns A Seurat object for the tile subset that can be used for sub-clustering.
+#' 
+#' @export
 MakeTileSubClusterObj = function(
     tile_obj, cluster, cell_obj,
     clusters.name = "seurat_clusters", npcs=30,
     tile_assay = NULL, cell_assay = NULL,
-    fast_sgd = FALSE,
+    fast_sgd = TRUE,
     n_neighbors = 15,
     scale.factor = NULL,
     use.existing.embeddings = NULL,
@@ -327,7 +348,7 @@ FindSubClusterCustom = function(
     resolution = 0.5, algorithm = 1, npcs=30,
     method = 'igraph',
     n_neighbors = 15,
-    fast_sgd = FALSE,
+    fast_sgd = TRUE,
     scale.factor = NULL,
     use.existing.embeddings = NULL,
     meta.vars.include = NULL,
@@ -362,6 +383,34 @@ FindSubClusterCustom = function(
     }
 }
 
+#' Find sub-clusters within a specific cluster of a Seurat object using matching tile and cell data
+#' 
+#' @param obj A Seurat object containing tile-level data.
+#' @param cluster The cluster label to sub-cluster.
+#' @param cell_obj (Opional) A Seurat object containing cell-level data with a `tile_id` metadata column.
+#'   If NULL, sub-clustering is performed using only `obj` without recomputing tile embeddings from cell data.
+#' @param clusters.name Name of the metadata column in `obj` containing the cluster labels.
+#' @param tile_assay Assay in `obj` to use for sub-clustering. If NULL, use DefaultAssay.
+#' @param cell_assay Assay in `cell_obj` to use for computing cell embeddings. If NULL, use DefaultAssay.
+#' @param sub.clusters.name Name of the metadata column to store the sub-cluster labels.
+#'  If NULL, defaults to `<clusters.name>_s<cluster>`.
+#' @param resolution Resolution parameter for clustering.
+#' @param algorithm Clustering algorithm to use. See `?Seurat::FindClusters` for details.
+#' @param npcs Number of principal components to use for sub-clustering.
+#' @param method Method to use for clustering. See `?Seurat::FindClusters` for details.
+#' @param n_neighbors Number of neighbors to use in UMAP.
+#' @param fast_sgd Whether to use fast SGD in UMAP.
+#' @param scale.factor Scale factor for normalization. If NULL, use median nCount_RNA.
+#' @param use.existing.embeddings Name of existing dimensional reduction in `obj`
+#'   to use for sub-clustering. If NULL, compute PCA on the subsetted cell-level data.
+#' @param meta.vars.include Metadata variables to include in the sub-clustered object.
+#' @param harmony.group.by.vars Metadata variables to use for Harmony integration.
+#' @param early_stop Whether to use early stopping in Harmony.
+#' @param return_obj_sub If TRUE, return a list with the updated `obj` and the sub-clustered object.
+#'
+#' @returns The input Seurat object with sub-cluster labels added to metadata.
+#' 
+#' @export
 FindTileSubCluster = function(
     obj, cluster, cell_obj = NULL,
     clusters.name = "seurat_clusters",
