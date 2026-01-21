@@ -191,6 +191,7 @@ GetTiles.Seurat = function(
     tile_obj[[graph.name]] = Seurat::as.Graph(res$aggs$adj)
 
     # Match tile_id factor levels to order in tile_obj
+    tile_obj@meta.data$id = as.character(tile_obj@meta.data$id)
     obj@meta.data[[tile.id.name]] = factor(
         obj@meta.data[[tile.id.name]],
         levels=tile_obj@meta.data$id
