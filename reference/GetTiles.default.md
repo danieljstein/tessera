@@ -50,7 +50,7 @@ GetTiles(
   smooth_distance = c("none", "euclidean", "projected", "constant")[3],
   smooth_similarity = c("none", "euclidean", "projected", "constant")[3],
   smooth_iter = 1,
-  on_edges = FALSE,
+  on_edges = TRUE,
   max_npts = 50,
   min_npts = 5,
   alpha = 1,
