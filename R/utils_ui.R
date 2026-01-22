@@ -656,6 +656,10 @@ ConsolidateResults = function(res, group.by) {
     all_dmt$pts[[group.by]] = factor(all_dmt$pts[[group.by]])
     all_dmt$pts$agg_id = paste0(all_dmt$pts[[group.by]], '_', all_dmt$pts$agg_id)
 
+    all_dmt$udv_cells = list(
+        embeddings = rbindlist(lapply(names(res), function(group) {res[[group]]$dmt$udv_cells$embeddings}))
+    )
+
     return(list(dmt=all_dmt, aggs=all_aggs))
 }
 
