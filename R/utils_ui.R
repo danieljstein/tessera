@@ -63,6 +63,7 @@ GetTiles.Seurat = function(
     tile.id.name = 'tile_id',
     reduction.name = 'pca',
     graph.name = 'tile_adj',
+    graph.name.cells = 'cell_adj',
     add.isolated.cells = TRUE,
     ...
 ) {
@@ -215,6 +216,7 @@ GetTiles.Seurat = function(
         obj@meta.data[[tile.id.name]],
         levels=tile_obj@meta.data$id
     )
+    obj[[graph.name.cells]] = Seurat::as.Graph(res$dmt$adj)
 
     return(list(obj=obj, tile_obj=tile_obj))
 }
@@ -587,12 +589,31 @@ GetTiles.default = function(
     }, .progress=.progress, .options=.options)
 
     if (consolidate) {
+
+        # Collect cell adjacency matrix used for DMT
+        from_ids = do.call(c, lapply(names(res), function(group) {
+            res[[group]]$dmt$pts$ORIG_ID[res[[group]]$dmt$edges$from_pt]
+        }))
+        to_ids = do.call(c, lapply(names(res), function(group) {
+            res[[group]]$dmt$pts$ORIG_ID[res[[group]]$dmt$edges$to_pt]
+        }))
+        stopifnot(all(from_ids < to_ids))
+        dmt_adj = Matrix::sparseMatrix(
+            i = c(from_ids, to_ids),
+            j = c(to_ids, from_ids),
+            x = 1,
+            dims = c(length(X), length(X))
+        )
+
         if (length(res) > 1) {
             res = ConsolidateResults(res, group.by)
         } else {
             res = res[[1]]
         }
+
         res$aggs = AddAggsAdjacencyMatrix(res$aggs)
+        res$dmt$adj = dmt_adj
+
         return(res)
     } else {
         return(res)
