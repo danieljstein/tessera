@@ -143,6 +143,18 @@ GetTiles.Seurat = function(
     obj@meta.data[[tile.id.name]] = as.character(NA)
     obj@meta.data[[tile.id.name]][res$dmt$pts$ORIG_ID] = res$dmt$pts$agg_id
 
+    # Add cell-level embeddings used for Tessera to input Seurat object
+    if (!is.null(embeddings)) {
+        dmt_emb = res$dmt$udv_cells$embeddings
+        emb_tessera = do.call(cbind, replicate(ncol(dmt_emb) / ncol(emb), emb, simplify=FALSE))
+        colnames(emb_tessera) = paste0('PC_', 1:ncol(emb_tessera))
+        emb_tessera[res$dmt$pts$ORIG_ID,] = dmt_emb
+
+        embeddings.name = paste0(embeddings, '_tessera')
+        embeddings.name = tail(make.unique(c(Seurat::Reductions(obj), embeddings.name)), n = 1)
+        obj[[embeddings.name]] <- Seurat::CreateDimReducObject(embeddings = emb_tessera, key = embeddings.name)
+    }
+
     # (Optional) Add back isolated single cells that were pruned out
     if (add.isolated.cells & !is.null(embeddings)) {
         isolated_cells = which(is.na(obj@meta.data[[tile.id.name]]))
