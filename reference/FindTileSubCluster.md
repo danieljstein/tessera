@@ -22,6 +22,8 @@ FindTileSubCluster(
   fast_sgd = TRUE,
   scale.factor = NULL,
   use.existing.embeddings = NULL,
+  smooth_emb = c(0, 1),
+  graph.name.cells = "cell_adj",
   meta.vars.include = NULL,
   harmony.group.by.vars = NULL,
   early_stop = TRUE,
@@ -99,6 +101,17 @@ FindTileSubCluster(
 
   Name of existing dimensional reduction in `obj` to use for
   sub-clustering. If NULL, compute PCA on the subsetted cell-level data.
+
+- smooth_emb:
+
+  Number of smoothing iterations to perform on the cell embeddings, as
+  for `GetTiles`. If a vector, then embeddings after each specified
+  iteration are concatenated. If `0` is included, then the original
+  embeddings are also included.
+
+- graph.name.cells:
+
+  Name of the graph in `cell_obj` containing the cell adjacency graph.
 
 - meta.vars.include:
 

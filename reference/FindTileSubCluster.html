@@ -59,6 +59,8 @@
 <span>  fast_sgd <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  scale.factor <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  use.existing.embeddings <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  smooth_emb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  graph.name.cells <span class="op">=</span> <span class="st">"cell_adj"</span>,</span>
 <span>  meta.vars.include <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  harmony.group.by.vars <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  early_stop <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -131,6 +133,16 @@ If NULL, defaults to <code>&lt;clusters.name&gt;_s&lt;cluster&gt;</code>.</p></d
 <dt id="arg-use-existing-embeddings">use.existing.embeddings<a class="anchor" aria-label="anchor" href="#arg-use-existing-embeddings"></a></dt>
 <dd><p>Name of existing dimensional reduction in <code>obj</code>
 to use for sub-clustering. If NULL, compute PCA on the subsetted cell-level data.</p></dd>
+
+
+<dt id="arg-smooth-emb">smooth_emb<a class="anchor" aria-label="anchor" href="#arg-smooth-emb"></a></dt>
+<dd><p>Number of smoothing iterations to perform on the cell embeddings,
+as for <code>GetTiles</code>. If a vector, then embeddings after each specified
+iteration are concatenated. If <code>0</code> is included, then the original embeddings are also included.</p></dd>
+
+
+<dt id="arg-graph-name-cells">graph.name.cells<a class="anchor" aria-label="anchor" href="#arg-graph-name-cells"></a></dt>
+<dd><p>Name of the graph in <code>cell_obj</code> containing the cell adjacency graph.</p></dd>
 
 
 <dt id="arg-meta-vars-include">meta.vars.include<a class="anchor" aria-label="anchor" href="#arg-meta-vars-include"></a></dt>
