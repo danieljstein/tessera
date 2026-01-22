@@ -231,6 +231,10 @@ MakeSubClusterObj = function(
 #' @param scale.factor Scale factor for normalization. If NULL, use median nCount_RNA.
 #' @param use.existing.embeddings Name of existing dimensional reduction in `tile_obj`
 #'   to use for sub-clustering. If NULL, compute PCA on the subsetted cell-level data.
+#' @param smooth_emb Number of smoothing iterations to perform on the cell embeddings,
+#'   as for `GetTiles`. If a vector, then embeddings after each specified
+#'   iteration are concatenated. If `0` is included, then the original embeddings are also included.
+#' @param graph.name.cells Name of the graph in `cell_obj` containing the cell adjacency graph.
 #' @param meta.vars.include Metadata variables to include in the sub-clustered object.
 #' @param harmony.group.by.vars Metadata variables to use for Harmony integration.
 #' @param early_stop Whether to use early stopping in Harmony.
@@ -246,6 +250,8 @@ MakeTileSubClusterObj = function(
     n_neighbors = 15,
     scale.factor = NULL,
     use.existing.embeddings = NULL,
+    smooth_emb = c(0, 1),
+    graph.name.cells = 'cell_adj',
     meta.vars.include = NULL,
     harmony.group.by.vars = NULL,
     early_stop = TRUE
@@ -294,11 +300,40 @@ MakeTileSubClusterObj = function(
                 reduction.save = paste0(reduction, '_harmony'))
             reduction = paste0(reduction, '_harmony')
         }
+
+        # smooth embeddings
+        embeddings = Embeddings(cell_obj_sub, reduction)
+        loadings = Loadings(cell_obj_sub, reduction)
+        if (!all(smooth_emb == 0)) {
+            adj = Seurat::as.sparse(cell_obj[[graph.name.cells]])[cell_subset_idx,cell_subset_idx]
+            diag(adj) = 1
+            adj = adj / Matrix::colSums(adj)  # normalize
+
+            smoothed_embeddings = list()
+            if (0 %in% smooth_emb) {
+                smoothed_embeddings[['0']] = as.matrix(embeddings)
+            }
+            for (i in seq_len(max(smooth_emb))) {
+                embeddings = adj %*% embeddings
+                if (i %in% smooth_emb) {
+                    smoothed_embeddings[[as.character(i)]] = as.matrix(embeddings)
+                }
+            }
+
+            embeddings = do.call(cbind, smoothed_embeddings)
+            rownames(embeddings) = colnames(cell_obj_sub)
+            colnames(embeddings) = paste0('PC_', 1:ncol(embeddings))
+
+            loadings = do.call(cbind, replicate(length(smooth_emb), loadings, simplify=FALSE))
+            rownames(loadings) = rownames(Loadings(cell_obj_sub, reduction))
+            colnames(loadings) = paste0('PC_', 1:ncol(embeddings))
+        }
         
         tile_obj_sub[[reduction]] <- CreateDimReducObject(
-            embeddings = aggregate_embeddings(Embeddings(cell_obj_sub, reduction),
-                                              droplevels(cell_obj_sub$tile_id))[colnames(tile_obj_sub),],
-            loadings = Loadings(cell_obj_sub, reduction),
+            embeddings = aggregate_embeddings(
+                embeddings, droplevels(cell_obj_sub$tile_id)
+            )[colnames(tile_obj_sub),],
+            loadings = loadings,
             key = reduction
         )
     } else {
@@ -403,6 +438,10 @@ FindSubClusterCustom = function(
 #' @param scale.factor Scale factor for normalization. If NULL, use median nCount_RNA.
 #' @param use.existing.embeddings Name of existing dimensional reduction in `obj`
 #'   to use for sub-clustering. If NULL, compute PCA on the subsetted cell-level data.
+#' @param smooth_emb Number of smoothing iterations to perform on the cell embeddings,
+#'   as for `GetTiles`. If a vector, then embeddings after each specified
+#'   iteration are concatenated. If `0` is included, then the original embeddings are also included.
+#' @param graph.name.cells Name of the graph in `cell_obj` containing the cell adjacency graph.
 #' @param meta.vars.include Metadata variables to include in the sub-clustered object.
 #' @param harmony.group.by.vars Metadata variables to use for Harmony integration.
 #' @param early_stop Whether to use early stopping in Harmony.
@@ -422,6 +461,8 @@ FindTileSubCluster = function(
     fast_sgd = TRUE,
     scale.factor = NULL,
     use.existing.embeddings = NULL,
+    smooth_emb = c(0, 1),
+    graph.name.cells = 'cell_adj',
     meta.vars.include = NULL,
     harmony.group.by.vars = NULL,
     early_stop = TRUE,
@@ -447,6 +488,8 @@ FindTileSubCluster = function(
             npcs = npcs, n_neighbors = n_neighbors,
             scale.factor = scale.factor,
             use.existing.embeddings = use.existing.embeddings,
+            smooth_emb = smooth_emb,
+            graph.name.cells = graph.name.cells,
             meta.vars.include = meta.vars.include,
             harmony.group.by.vars = harmony.group.by.vars,
             early_stop = early_stop,
