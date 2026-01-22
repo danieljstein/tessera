@@ -216,7 +216,12 @@ GetTiles.Seurat = function(
         obj@meta.data[[tile.id.name]],
         levels=tile_obj@meta.data$id
     )
-    obj[[graph.name.cells]] = Seurat::as.Graph(res$dmt$adj)
+
+    # Add cell adjacency graph
+    adj_cells = res$dmt$adj
+    rownames(adj_cells) = colnames(obj)
+    colnames(adj_cells) = colnames(obj)
+    obj[[graph.name.cells]] = Seurat::as.Graph(adj_cells)
 
     return(list(obj=obj, tile_obj=tile_obj))
 }

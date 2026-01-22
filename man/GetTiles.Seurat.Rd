@@ -16,6 +16,7 @@
   tile.id.name = "tile_id",
   reduction.name = "pca",
   graph.name = "tile_adj",
+  graph.name.cells = "cell_adj",
   add.isolated.cells = TRUE,
   ...
 )
