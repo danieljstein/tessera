@@ -109,6 +109,15 @@ then no smoothing of the gradient field is conducted. Defaults to <code>'project
     <dt><code>smooth_iter</code></dt>
 <dd><p>Number of rounds of gradient smoothing.</p></dd>
 
+    <dt><code>on_edges</code></dt>
+<dd><p>Whether to compute gradients on edges instead of points. Defaults to TRUE.</p></dd>
+
+    <dt><code>edge_from_tri</code></dt>
+<dd><p>If <code>on_edges</code> is TRUE, whether to update edge gradients from triangles. Defaults to FALSE.</p></dd>
+
+    <dt><code>edge_from_pt</code></dt>
+<dd><p>If <code>on_edges</code> is TRUE, whether to update edge gradients from points. Defaults to FALSE.</p></dd>
+
     <dt><code>max_npts</code></dt>
 <dd><p>Maximum number of cells allowed in each tile during the
 agglomerative clustering phase.</p></dd>

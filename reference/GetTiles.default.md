@@ -51,6 +51,8 @@ GetTiles(
   smooth_similarity = c("none", "euclidean", "projected", "constant")[3],
   smooth_iter = 1,
   on_edges = TRUE,
+  edge_from_tri = FALSE,
+  edge_from_pt = FALSE,
   max_npts = 50,
   min_npts = 5,
   alpha = 1,
@@ -144,6 +146,21 @@ GetTiles(
 - smooth_iter:
 
   Number of rounds of gradient smoothing.
+
+- on_edges:
+
+  Whether to compute gradients on edges instead of points. Defaults to
+  TRUE.
+
+- edge_from_tri:
+
+  If `on_edges` is TRUE, whether to update edge gradients from
+  triangles. Defaults to FALSE.
+
+- edge_from_pt:
+
+  If `on_edges` is TRUE, whether to update edge gradients from points.
+  Defaults to FALSE.
 
 - max_npts:
 

@@ -80,6 +80,21 @@ GetTiles(...)
 
   :   Number of rounds of gradient smoothing.
 
+  `on_edges`
+
+  :   Whether to compute gradients on edges instead of points. Defaults
+      to TRUE.
+
+  `edge_from_tri`
+
+  :   If `on_edges` is TRUE, whether to update edge gradients from
+      triangles. Defaults to FALSE.
+
+  `edge_from_pt`
+
+  :   If `on_edges` is TRUE, whether to update edge gradients from
+      points. Defaults to FALSE.
+
   `max_npts`
 
   :   Maximum number of cells allowed in each tile during the
