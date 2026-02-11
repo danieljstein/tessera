@@ -22,6 +22,8 @@
   smooth_similarity = c("none", "euclidean", "projected", "constant")[3],
   smooth_iter = 1,
   on_edges = TRUE,
+  edge_from_tri = FALSE,
+  edge_from_pt = FALSE,
   max_npts = 50,
   min_npts = 5,
   alpha = 1,
@@ -77,6 +79,12 @@ If either \code{smooth_distance} or \code{smooth_similarity} is \code{'none'},
 then no smoothing of the gradient field is conducted. Defaults to \code{'projected'}.}
 
 \item{smooth_iter}{Number of rounds of gradient smoothing.}
+
+\item{on_edges}{Whether to compute gradients on edges instead of points. Defaults to TRUE.}
+
+\item{edge_from_tri}{If \code{on_edges} is TRUE, whether to update edge gradients from triangles. Defaults to FALSE.}
+
+\item{edge_from_pt}{If \code{on_edges} is TRUE, whether to update edge gradients from points. Defaults to FALSE.}
 
 \item{max_npts}{Maximum number of cells allowed in each tile during the
 agglomerative clustering phase.}

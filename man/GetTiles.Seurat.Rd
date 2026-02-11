@@ -73,6 +73,9 @@ then no smoothing of the gradient field is conducted. Defaults to \code{'project
 If either \code{smooth_distance} or \code{smooth_similarity} is \code{'none'},
 then no smoothing of the gradient field is conducted. Defaults to \code{'projected'}.}
     \item{\code{smooth_iter}}{Number of rounds of gradient smoothing.}
+    \item{\code{on_edges}}{Whether to compute gradients on edges instead of points. Defaults to TRUE.}
+    \item{\code{edge_from_tri}}{If \code{on_edges} is TRUE, whether to update edge gradients from triangles. Defaults to FALSE.}
+    \item{\code{edge_from_pt}}{If \code{on_edges} is TRUE, whether to update edge gradients from points. Defaults to FALSE.}
     \item{\code{max_npts}}{Maximum number of cells allowed in each tile during the
 agglomerative clustering phase.}
     \item{\code{min_npts}}{Minimum number of cells allowed in each tile during the

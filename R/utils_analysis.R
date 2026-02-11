@@ -172,14 +172,14 @@ MakeSubClusterObj = function(
     early_stop = TRUE
 ) {
     if (is.null(assay)) {
-        assay = DefaultAssay(obj)
+        assay = Seurat::DefaultAssay(obj)
     }
     
     subset_idx = which(obj@meta.data[[clusters.name]] == cluster)
     meta.vars.include = unique(c(meta.vars.include, harmony.group.by.vars))
     # counts = obj[["RNA"]]$counts[,subset_idx]
     # colnames(counts) = NULL
-    obj_sub = CreateSeuratObject(
+    obj_sub = Seurat::CreateSeuratObject(
         counts = obj[[assay]]$counts[,subset_idx],
         # counts = counts,
         meta.data = obj@meta.data[subset_idx, meta.vars.include]
@@ -189,15 +189,15 @@ MakeSubClusterObj = function(
         if (is.null(scale.factor)) {
             scale.factor = median(obj_sub$nCount_RNA)
         }
-        obj_sub <- NormalizeData(object = obj_sub, scale.factor = scale.factor)
-        obj_sub <- FindVariableFeatures(object = obj_sub)
-        obj_sub <- ScaleData(object = obj_sub)  # might get an error in this line if the cells don't have good names
-        obj_sub <- RunPCA(object = obj_sub, npcs = npcs)
+        obj_sub <- Seurat::NormalizeData(object = obj_sub, scale.factor = scale.factor)
+        obj_sub <- Seurat::FindVariableFeatures(object = obj_sub)
+        obj_sub <- Seurat::ScaleData(object = obj_sub)  # might get an error in this line if the cells don't have good names
+        obj_sub <- Seurat::RunPCA(object = obj_sub, npcs = npcs)
         reduction = "pca"
     } else {
-        obj_sub[[use.existing.embeddings]] <- CreateDimReducObject(
-            embeddings = Embeddings(obj, use.existing.embeddings)[subset_idx,],
-            loadings = Loadings(obj, use.existing.embeddings),
+        obj_sub[[use.existing.embeddings]] <- Seurat::CreateDimReducObject(
+            embeddings = Seurat::Embeddings(obj, use.existing.embeddings)[subset_idx,],
+            loadings = Seurat::Loadings(obj, use.existing.embeddings),
             key = use.existing.embeddings
         )
         reduction = use.existing.embeddings
@@ -260,25 +260,25 @@ MakeTileSubClusterObj = function(
     stopifnot('tile_id' %in% colnames(cell_obj@meta.data))
     
     if (is.null(tile_assay)) {
-        tile_assay = DefaultAssay(tile_obj)
+        tile_assay = Seurat::DefaultAssay(tile_obj)
     }
     
     subset_idx = which(tile_obj@meta.data[[clusters.name]] == cluster)
     meta.vars.include = unique(c(meta.vars.include, harmony.group.by.vars))
-    tile_obj_sub = CreateSeuratObject(
+    tile_obj_sub = Seurat::CreateSeuratObject(
         counts = tile_obj[[tile_assay]]$counts[,subset_idx],
         meta.data = tile_obj@meta.data[subset_idx, meta.vars.include, drop=FALSE]
     )
     
     if (is.null(use.existing.embeddings)) {
         if (is.null(cell_assay)) {
-            cell_assay = DefaultAssay(cell_obj)
+            cell_assay = Seurat::DefaultAssay(cell_obj)
         }
         
         cell_subset_idx = which(cell_obj$tile_id %in% colnames(tile_obj_sub))
         meta.vars.include = unique(c(meta.vars.include, harmony.group.by.vars, 'tile_id'))
         
-        cell_obj_sub = CreateSeuratObject(
+        cell_obj_sub = Seurat::CreateSeuratObject(
             counts = cell_obj[[cell_assay]]$counts[,cell_subset_idx],
             meta.data = cell_obj@meta.data[cell_subset_idx, meta.vars.include, drop=FALSE]
         )
@@ -286,10 +286,10 @@ MakeTileSubClusterObj = function(
         if (is.null(scale.factor)) {
             scale.factor = median(cell_obj_sub$nCount_RNA)
         }
-        cell_obj_sub <- NormalizeData(object = cell_obj_sub, scale.factor = scale.factor)
-        cell_obj_sub <- FindVariableFeatures(object = cell_obj_sub)
-        cell_obj_sub <- ScaleData(object = cell_obj_sub)  # might get an error in this line if the cells don't have good names
-        cell_obj_sub <- RunPCA(object = cell_obj_sub, npcs = npcs)
+        cell_obj_sub <- Seurat::NormalizeData(object = cell_obj_sub, scale.factor = scale.factor)
+        cell_obj_sub <- Seurat::FindVariableFeatures(object = cell_obj_sub)
+        cell_obj_sub <- Seurat::ScaleData(object = cell_obj_sub)  # might get an error in this line if the cells don't have good names
+        cell_obj_sub <- Seurat::RunPCA(object = cell_obj_sub, npcs = npcs)
         reduction = "pca"
     
         if (!is.null(harmony.group.by.vars)) {
@@ -302,8 +302,8 @@ MakeTileSubClusterObj = function(
         }
 
         # smooth embeddings
-        embeddings = Embeddings(cell_obj_sub, reduction)
-        loadings = Loadings(cell_obj_sub, reduction)
+        embeddings = Seurat::Embeddings(cell_obj_sub, reduction)
+        loadings = Seurat::Loadings(cell_obj_sub, reduction)
         if (!all(smooth_emb == 0)) {
             adj = Seurat::as.sparse(cell_obj[[graph.name.cells]])[cell_subset_idx,cell_subset_idx]
             diag(adj) = 1
@@ -325,11 +325,11 @@ MakeTileSubClusterObj = function(
             colnames(embeddings) = paste0('PC_', 1:ncol(embeddings))
 
             loadings = do.call(cbind, replicate(length(smooth_emb), loadings, simplify=FALSE))
-            rownames(loadings) = rownames(Loadings(cell_obj_sub, reduction))
+            rownames(loadings) = rownames(Seurat::Loadings(cell_obj_sub, reduction))
             colnames(loadings) = paste0('PC_', 1:ncol(embeddings))
         }
         
-        tile_obj_sub[[reduction]] <- CreateDimReducObject(
+        tile_obj_sub[[reduction]] <- Seurat::CreateDimReducObject(
             embeddings = aggregate_embeddings(
                 embeddings, droplevels(cell_obj_sub$tile_id)
             )[colnames(tile_obj_sub),],
@@ -337,9 +337,9 @@ MakeTileSubClusterObj = function(
             key = reduction
         )
     } else {
-        tile_obj_sub[[use.existing.embeddings]] <- CreateDimReducObject(
-            embeddings = Embeddings(tile_obj, use.existing.embeddings)[subset_idx,],
-            loadings = Loadings(tile_obj, use.existing.embeddings),
+        tile_obj_sub[[use.existing.embeddings]] <- Seurat::CreateDimReducObject(
+            embeddings = Seurat::Embeddings(tile_obj, use.existing.embeddings)[subset_idx,],
+            loadings = Seurat::Loadings(tile_obj, use.existing.embeddings),
             key = use.existing.embeddings
         )
         reduction = use.existing.embeddings
@@ -401,11 +401,11 @@ FindSubClusterCustom = function(
                                 fast_sgd = fast_sgd)
     if (algorithm == 4) {
         suppressWarnings({    # the igraph conversion spits out a lot of warnings, which is slow if printed
-            obj_sub <- FindClusters(object = obj_sub, resolution = resolution, algorithm = algorithm,
+            obj_sub <- Seurat::FindClusters(object = obj_sub, resolution = resolution, algorithm = algorithm,
                             method = method, graph.name = 'RNA_fgraph')
         })
     } else {
-        obj_sub <- FindClusters(object = obj_sub, resolution = resolution, algorithm = algorithm,
+        obj_sub <- Seurat::FindClusters(object = obj_sub, resolution = resolution, algorithm = algorithm,
                             method = method, graph.name = 'RNA_fgraph')
     }
 
@@ -499,11 +499,11 @@ FindTileSubCluster = function(
     
     if (algorithm == 4) {
         suppressWarnings({    # the igraph conversion spits out a lot of warnings, which is slow if printed
-            obj_sub <- FindClusters(object = obj_sub, resolution = resolution, algorithm = algorithm,
+            obj_sub <- Seurat::FindClusters(object = obj_sub, resolution = resolution, algorithm = algorithm,
                             method = method, graph.name = 'RNA_fgraph')
         })
     } else {
-        obj_sub <- FindClusters(object = obj_sub, resolution = resolution, algorithm = algorithm,
+        obj_sub <- Seurat::FindClusters(object = obj_sub, resolution = resolution, algorithm = algorithm,
                             method = method, graph.name = 'RNA_fgraph')
     }
 

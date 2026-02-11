@@ -327,6 +327,9 @@ GetTiles.Seurat = function(
 #'   If either `smooth_distance` or `smooth_similarity` is `'none'`,
 #'   then no smoothing of the gradient field is conducted. Defaults to `'projected'`.
 #' @param smooth_iter Number of rounds of gradient smoothing.
+#' @param on_edges Whether to compute gradients on edges instead of points. Defaults to TRUE.
+#' @param edge_from_tri If `on_edges` is TRUE, whether to update edge gradients from triangles. Defaults to FALSE.
+#' @param edge_from_pt If `on_edges` is TRUE, whether to update edge gradients from points. Defaults to FALSE.
 #' @param max_npts Maximum number of cells allowed in each tile during the
 #'   agglomerative clustering phase.
 #' @param min_npts Minimum number of cells allowed in each tile during the
@@ -470,6 +473,8 @@ GetTiles.default = function(
     smooth_similarity = c('none', 'euclidean', 'projected', 'constant')[3],
     smooth_iter = 1,
     on_edges = TRUE,
+    edge_from_tri = FALSE,
+    edge_from_pt = FALSE,
 
     ###### STEP 2: DMT ######
 
@@ -556,7 +561,10 @@ GetTiles.default = function(
         if (verbose) message('STEP 1: GRADIENTS ')
         field = compute_gradients(
             dmt, smooth_distance, smooth_similarity,
-            smooth_iter = smooth_iter, on_edges = on_edges)
+            smooth_iter = smooth_iter,
+            on_edges = on_edges,
+            edge_from_tri = edge_from_tri,
+            edge_from_pt = edge_from_pt)
         field = compress_gradients_svd(field)
 
         ## STEP 2: DMT
