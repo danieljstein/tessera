@@ -107,19 +107,6 @@ compute_gradients_edges = function(
     field$tris[1,,] = as.matrix(Matrix::tcrossprod(field$edges[1,,], tri_to_edge))
     field$tris[2,,] = as.matrix(Matrix::tcrossprod(field$edges[2,,], tri_to_edge))
 
-    if (edge_from_tri) {
-        edge_to_tri = Matrix::sparseMatrix(
-            i = c(seq_len(nrow(dmt$edges)), seq_len(nrow(dmt$edges))),
-            j = c(dmt$edges$from_tri, dmt$edges$to_tri),
-            x = 1,
-            dims = c(nrow(dmt$edges), nrow(dmt$tris))
-        )  # every edge has 2 triangles, every triangle has 3 edges, or 1 if degenerate
-        edge_to_tri = edge_to_tri / Matrix::rowSums(edge_to_tri)
-        # field$edges = array(dim = c(2, dim(field$edges)[2], nrow(dmt$edges)))
-        field$edges[1,,] = as.matrix(Matrix::tcrossprod(field$tris[1,,], edge_to_tri))
-        field$edges[2,,] = as.matrix(Matrix::tcrossprod(field$tris[2,,], edge_to_tri))
-    }
-
     ## Field on pts: average of gradients for incoming edges
     pt_to_edge = Matrix::sparseMatrix(
         i = c(dmt$edges$from_pt, dmt$edges$to_pt),
@@ -134,8 +121,36 @@ compute_gradients_edges = function(
     field$pts[2,,] = as.matrix(Matrix::tcrossprod(field$edges[2,,], pt_to_edge))
 
     ## Backwards compatibility
-    field$edges_pts = field$edges
-    field$edges_tris = field$edges
+
+    if (edge_from_tri) {
+        edge_to_tri = Matrix::sparseMatrix(
+            i = c(seq_len(nrow(dmt$edges)), seq_len(nrow(dmt$edges))),
+            j = c(dmt$edges$from_tri, dmt$edges$to_tri),
+            x = 1,
+            dims = c(nrow(dmt$edges), nrow(dmt$tris))
+        )  # every edge has 2 triangles, every triangle has 3 edges, or 1 if degenerate
+        edge_to_tri = edge_to_tri / Matrix::rowSums(edge_to_tri)
+        field$edges_tris = array(dim = c(2, dim(field$edges)[2], nrow(dmt$edges)))
+        field$edges_tris[1,,] = as.matrix(Matrix::tcrossprod(field$tris[1,,], edge_to_tri))
+        field$edges_tris[2,,] = as.matrix(Matrix::tcrossprod(field$tris[2,,], edge_to_tri))
+    } else {
+        field$edges_tris = field$edges
+    }
+
+    if (edge_from_pt) {
+        edge_to_pt = Matrix::sparseMatrix(
+            i = c(seq_len(nrow(dmt$edges)), seq_len(nrow(dmt$edges))),
+            j = c(dmt$edges$from_pt, dmt$edges$to_pt),
+            x = 1,
+            dims = c(nrow(dmt$edges), nrow(dmt$pts))
+        )  # every edge has 2 pts, each pt can have a range of neighbors
+        edge_to_pt = edge_to_pt / Matrix::rowSums(edge_to_pt)
+        field$edges_pts = array(dim = c(2, dim(field$edges)[2], nrow(dmt$edges)))
+        field$edges_pts[1,,] = as.matrix(Matrix::tcrossprod(field$pts[1,,], edge_to_pt))
+        field$edges_pts[2,,] = as.matrix(Matrix::tcrossprod(field$pts[2,,], edge_to_pt))
+    } else {
+        field$edges_pts = field$edges
+    }
 
     return(field)
 }
