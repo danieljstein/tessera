@@ -122,6 +122,9 @@ compute_gradients_edges = function(
 
     ## Backwards compatibility
 
+    field$edges_tris = field$edges
+    field$edges_pts = field$edges
+
     if (edge_from_tri) {
         edge_to_tri = Matrix::sparseMatrix(
             i = c(seq_len(nrow(dmt$edges)), seq_len(nrow(dmt$edges))),
@@ -133,8 +136,8 @@ compute_gradients_edges = function(
         field$edges_tris = array(dim = c(2, dim(field$edges)[2], nrow(dmt$edges)))
         field$edges_tris[1,,] = as.matrix(Matrix::tcrossprod(field$tris[1,,], edge_to_tri))
         field$edges_tris[2,,] = as.matrix(Matrix::tcrossprod(field$tris[2,,], edge_to_tri))
-    } else {
-        field$edges_tris = field$edges
+
+        field$edges_pts = field$edges_tris
     }
 
     if (edge_from_pt) {
@@ -148,8 +151,6 @@ compute_gradients_edges = function(
         field$edges_pts = array(dim = c(2, dim(field$edges)[2], nrow(dmt$edges)))
         field$edges_pts[1,,] = as.matrix(Matrix::tcrossprod(field$pts[1,,], edge_to_pt))
         field$edges_pts[2,,] = as.matrix(Matrix::tcrossprod(field$pts[2,,], edge_to_pt))
-    } else {
-        field$edges_pts = field$edges
     }
 
     return(field)
