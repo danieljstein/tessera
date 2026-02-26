@@ -571,7 +571,7 @@ aggregate_embeddings = function(embeddings, groups, mean = TRUE, as_matrix = TRU
         group_by_cell = group_by_cell / group_counts
     }
     if (transposed) {
-        aggregated = embeddings %*% t(group_by_cell)
+        aggregated = Matrix::tcrossprod(embeddings, group_by_cell)
     } else {
         aggregated = group_by_cell %*% embeddings    # sum of embeddings
     }
