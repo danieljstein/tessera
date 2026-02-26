@@ -242,7 +242,7 @@ sessionInfo()
 #>  [1] purrr_1.2.1         future_1.69.0       patchwork_1.3.2    
 #>  [4] viridis_0.6.5       viridisLite_0.4.3   ggthemes_5.2.0     
 #>  [7] ggplot2_4.0.2       Seurat_5.4.0        SeuratObject_5.3.0 
-#> [10] sp_2.2-1            tessera_0.1.11      Rcpp_1.1.1         
+#> [10] sp_2.2-1            tessera_0.1.12      Rcpp_1.1.1         
 #> [13] data.table_1.18.2.1
 #> 
 #> loaded via a namespace (and not attached):
