@@ -330,6 +330,9 @@ GetTiles.Seurat = function(
 #' @param on_edges Whether to compute gradients on edges instead of points. Defaults to TRUE.
 #' @param edge_from_tri If `on_edges` is TRUE, whether to update edge gradients from triangles. Defaults to FALSE.
 #' @param edge_from_pt If `on_edges` is TRUE, whether to update edge gradients from points. Defaults to FALSE.
+#' @param f_norm If `TRUE`, set field values to the Frobenius norm of the total derivative.
+#'   If `FALSE`, set field values to the sum of the magnitudes of the directional derivatives
+#'   in the gradient and orthogonal directions.
 #' @param max_npts Maximum number of cells allowed in each tile during the
 #'   agglomerative clustering phase.
 #' @param min_npts Minimum number of cells allowed in each tile during the
@@ -477,6 +480,7 @@ GetTiles.default = function(
     edge_from_pt = FALSE,
 
     ###### STEP 2: DMT ######
+    f_norm = FALSE,
 
     ###### STEP 3: AGGREGATION ######
     max_npts = 50,
@@ -569,7 +573,7 @@ GetTiles.default = function(
 
         ## STEP 2: DMT
         if (verbose) message('STEP 2: DMT')
-        dmt = dmt_set_f(dmt, field)
+        dmt = dmt_set_f(dmt, field, f_norm = f_norm)
         dmt$prim = do_primary_forest(dmt)
         dmt$dual = do_dual_forest(dmt)
         dmt$e_sep = dmt_get_separatrices(dmt)

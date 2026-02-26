@@ -24,6 +24,7 @@
   on_edges = TRUE,
   edge_from_tri = FALSE,
   edge_from_pt = FALSE,
+  f_norm = FALSE,
   max_npts = 50,
   min_npts = 5,
   alpha = 1,
@@ -85,6 +86,10 @@ then no smoothing of the gradient field is conducted. Defaults to \code{'project
 \item{edge_from_tri}{If \code{on_edges} is TRUE, whether to update edge gradients from triangles. Defaults to FALSE.}
 
 \item{edge_from_pt}{If \code{on_edges} is TRUE, whether to update edge gradients from points. Defaults to FALSE.}
+
+\item{f_norm}{If \code{TRUE}, set field values to the Frobenius norm of the total derivative.
+If \code{FALSE}, set field values to the sum of the magnitudes of the directional derivatives
+in the gradient and orthogonal directions.}
 
 \item{max_npts}{Maximum number of cells allowed in each tile during the
 agglomerative clustering phase.}
