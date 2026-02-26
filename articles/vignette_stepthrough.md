@@ -485,12 +485,12 @@ sessionInfo()
 #> [29] pillar_1.11.1      furrr_0.3.1        jquerylib_0.1.4    classInt_0.4-11   
 #> [33] cachem_1.1.0       abind_1.4-8        mclust_6.1.2       RSpectra_0.16-2   
 #> [37] parallelly_1.46.1  tidyselect_1.2.1   digest_0.6.39      stringi_1.8.7     
-#> [41] future_1.69.0      sf_1.0-24          dplyr_1.2.0        purrr_1.2.1       
+#> [41] future_1.69.0      sf_1.1-0           dplyr_1.2.0        purrr_1.2.1       
 #> [45] listenv_0.10.0     labeling_0.4.3     magic_1.6-1        fastmap_1.2.0     
 #> [49] grid_4.5.2         cli_3.6.5          magrittr_2.0.4     e1071_1.7-17      
 #> [53] withr_3.0.2        scales_1.4.0       rmarkdown_2.30     globals_0.19.0    
 #> [57] igraph_2.2.2       otel_0.2.0         gridExtra_2.3      ragg_1.5.0        
 #> [61] evaluate_1.0.5     knitr_1.51         geometry_0.5.2     rlang_1.1.7       
-#> [65] glue_1.8.0         DBI_1.2.3          jsonlite_2.0.0     R6_2.6.1          
+#> [65] glue_1.8.0         DBI_1.3.0          jsonlite_2.0.0     R6_2.6.1          
 #> [69] systemfonts_1.3.1  fs_1.6.6           units_1.0-0
 ```

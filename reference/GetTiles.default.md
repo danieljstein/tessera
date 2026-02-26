@@ -53,6 +53,7 @@ GetTiles(
   on_edges = TRUE,
   edge_from_tri = FALSE,
   edge_from_pt = FALSE,
+  f_norm = FALSE,
   max_npts = 50,
   min_npts = 5,
   alpha = 1,
@@ -161,6 +162,13 @@ GetTiles(
 
   If `on_edges` is TRUE, whether to update edge gradients from points.
   Defaults to FALSE.
+
+- f_norm:
+
+  If `TRUE`, set field values to the Frobenius norm of the total
+  derivative. If `FALSE`, set field values to the sum of the magnitudes
+  of the directional derivatives in the gradient and orthogonal
+  directions.
 
 - max_npts:
 

@@ -124,6 +124,7 @@ of cells in order to prioritize favorable merges in each agglomerative clusterin
 <span>  on_edges <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  edge_from_tri <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  edge_from_pt <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  f_norm <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  max_npts <span class="op">=</span> <span class="fl">50</span>,</span>
 <span>  min_npts <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -224,6 +225,12 @@ then no smoothing of the gradient field is conducted. Defaults to <code>'project
 
 <dt id="arg-edge-from-pt">edge_from_pt<a class="anchor" aria-label="anchor" href="#arg-edge-from-pt"></a></dt>
 <dd><p>If <code>on_edges</code> is TRUE, whether to update edge gradients from points. Defaults to FALSE.</p></dd>
+
+
+<dt id="arg-f-norm">f_norm<a class="anchor" aria-label="anchor" href="#arg-f-norm"></a></dt>
+<dd><p>If <code>TRUE</code>, set field values to the Frobenius norm of the total derivative.
+If <code>FALSE</code>, set field values to the sum of the magnitudes of the directional derivatives
+in the gradient and orthogonal directions.</p></dd>
 
 
 <dt id="arg-max-npts">max_npts<a class="anchor" aria-label="anchor" href="#arg-max-npts"></a></dt>

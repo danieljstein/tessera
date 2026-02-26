@@ -155,6 +155,13 @@ GetTiles(
   :   If `on_edges` is TRUE, whether to update edge gradients from
       points. Defaults to FALSE.
 
+  `f_norm`
+
+  :   If `TRUE`, set field values to the Frobenius norm of the total
+      derivative. If `FALSE`, set field values to the sum of the
+      magnitudes of the directional derivatives in the gradient and
+      orthogonal directions.
+
   `max_npts`
 
   :   Maximum number of cells allowed in each tile during the
