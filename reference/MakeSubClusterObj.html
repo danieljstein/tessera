@@ -55,7 +55,8 @@
 <span>  use.existing.embeddings <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  meta.vars.include <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  harmony.group.by.vars <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  early_stop <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  early_stop <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -106,6 +107,10 @@ to use for sub-clustering. If NULL, compute PCA on the subsetted data.</p></dd>
 
 <dt id="arg-early-stop">early_stop<a class="anchor" aria-label="anchor" href="#arg-early-stop"></a></dt>
 <dd><p>Whether to use early stopping in Harmony.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>Additional parameters to pass to <code><a href="https://rdrr.io/pkg/harmony/man/RunHarmony.html" class="external-link">harmony::RunHarmony</a></code>. Ignored if <code>harmony.group.by.vars</code> is NULL.</p></dd>
 
 </dl></div>
     <div class="section level2">

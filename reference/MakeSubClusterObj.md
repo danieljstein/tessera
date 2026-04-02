@@ -17,7 +17,8 @@ MakeSubClusterObj(
   use.existing.embeddings = NULL,
   meta.vars.include = NULL,
   harmony.group.by.vars = NULL,
-  early_stop = TRUE
+  early_stop = TRUE,
+  ...
 )
 ```
 
@@ -67,6 +68,12 @@ MakeSubClusterObj(
 - early_stop:
 
   Whether to use early stopping in Harmony.
+
+- ...:
+
+  Additional parameters to pass to
+  [`harmony::RunHarmony`](https://rdrr.io/pkg/harmony/man/RunHarmony.html).
+  Ignored if `harmony.group.by.vars` is NULL.
 
 ## Value
 

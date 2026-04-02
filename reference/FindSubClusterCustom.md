@@ -21,7 +21,8 @@ FindSubClusterCustom(
   meta.vars.include = NULL,
   harmony.group.by.vars = NULL,
   early_stop = TRUE,
-  return_obj_sub = FALSE
+  return_obj_sub = FALSE,
+  ...
 )
 ```
 
@@ -97,6 +98,12 @@ FindSubClusterCustom(
 
   If TRUE, return a list with the updated `obj` and the sub-clustered
   object.
+
+- ...:
+
+  Additional parameters to pass to
+  [`harmony::RunHarmony`](https://rdrr.io/pkg/harmony/man/RunHarmony.html).
+  Ignored if `harmony.group.by.vars` is NULL.
 
 ## Value
 
