@@ -72,7 +72,7 @@ MakeSubClusterObj(
 - ...:
 
   Additional parameters to pass to
-  [`harmony::RunHarmony`](https://rdrr.io/pkg/harmony/man/RunHarmony.html).
+  [`harmony::RunHarmony`](https://pati-ni.github.io/harmony/reference/RunHarmony.html).
   Ignored if `harmony.group.by.vars` is NULL.
 
 ## Value
